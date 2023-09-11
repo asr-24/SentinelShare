@@ -8,6 +8,7 @@ import Logout from "./Components/Logout/Logout";
 
 function setToken(userToken) {
   sessionStorage.setItem("token", JSON.stringify(userToken));
+  window.location.reload(false);
 }
 
 function getToken() {
