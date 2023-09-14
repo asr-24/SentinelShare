@@ -3,7 +3,6 @@ import { strings } from '@helia/strings'
 import { json } from '@helia/json'
 
 
-
 const helia = await createHelia()
 const s = strings(helia)
 

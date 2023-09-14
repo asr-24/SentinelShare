@@ -42,11 +42,11 @@ export default function Login({ setSessionStore }) {
       <form className="loginForm" onSubmit={handleSubmit}>
         <div className="formInputs">
           <div>
-            <label>Username</label>
+            <label>Username</label> <br/>
             <input type="text" onChange={(e) => setUsername(e.target.value)} />
           </div>
           <div>
-            <label>Password</label>
+            <label>Password</label> <br/>
             <input
               type="password"
               onChange={(e) => setPassword(e.target.value)}

@@ -1,11 +1,11 @@
 import { Web3 } from "web3";
 import "dotenv/config";
 import { readFile } from "fs/promises";
-import { createHelia } from 'helia'
-import { strings } from '@helia/strings'
-import { CID } from 'multiformats/cid'
-import { json } from '@helia/json'
-import { dagCbor } from '@helia/dag-cbor'
+// import { createHelia } from 'helia'
+// import { strings } from '@helia/strings'
+// import { CID } from 'multiformats/cid'
+// import { json } from '@helia/json'
+// import { dagCbor } from '@helia/dag-cbor'
 
 
 //Set Infura Sepolia network as the Provider
@@ -20,7 +20,7 @@ console.log("Connection Successful!\n");
 //Get latest build (information) of smart contract
 console.log("Reading IPFS.json...");
 const contractBuild = JSON.parse(
-  await readFile(new URL("./build/contracts/IPFS.json", import.meta.url))
+  await readFile(new URL("../truffle/build/contracts/IPFS.json", import.meta.url))
 );
 console.log("Contract read successful!\n");
 
@@ -33,8 +33,8 @@ const contract = new web3.eth.Contract(
 console.log("Extraction successful!");
 console.log(`Contract address: ${contractBuild.networks[11155111].address}\n`);
 
-async function getDataFromIPFS(cid) {
-  const helia = await createHelia()
+// async function getDataFromIPFS(cid) {
+//   const helia = await createHelia()
   // const str = strings(helia)
   // console.log("idk")
   // const data = await str.get(cid)
@@ -42,11 +42,11 @@ async function getDataFromIPFS(cid) {
   // const j = json(helia)
   // const data = await j.get(cid)
 
-  const d = dagCbor(helia)
-  const retrievedObject = await d.get(cid)
-  const data = await d.get(retrievedObject.link);
-  return data;
-}
+//   const d = dagCbor(helia)
+//   const retrievedObject = await d.get(cid)
+//   const data = await d.get(retrievedObject.link);
+//   return data;
+// }
 
 function getDatabaseCID() {
   // Call the getHash method of the contract and log the value.
@@ -56,17 +56,17 @@ function getDatabaseCID() {
     .then((value) => {
       console.log(`AuthDB CID: ${value}`);
       console.log("Fetch successful!\n");
-      console.log(typeof value);
+      // console.log(typeof value);
       // Retrieve the data from IPFS using Helia.
-      getDataFromIPFS(value).then((data) => {
+      // getDataFromIPFS(value).then((data) => {
         // // Process the data as needed.
-        console.log("Data retrieved from IPFS:", data);
+        // console.log("Data retrieved from IPFS:", data);
         // Parse the data as a JSON object.
-        const jsonData = JSON.parse(data);
+        // const jsonData = JSON.parse(data);
 
         // Process the JSON data as needed.
-        console.log("Data retrieved from IPFS:", jsonData);
-      });
+        // console.log("Data retrieved from IPFS:", jsonData);
+      // });
     })
     .catch((error) => console.error(error));
 }
