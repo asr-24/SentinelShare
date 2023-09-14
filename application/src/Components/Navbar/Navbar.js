@@ -1,10 +1,16 @@
 import React from "react";
 import "./Navbar.css";
 
-export default function Navbar({ tokenPresence }) {
-  console.log(tokenPresence);
+export default function Navbar(props) {
+  function handleLogout() {
+    sessionStorage.clear();
+  }
+  console.log(props);
+  let role = props.role;
+  let name = props.name;
+  console.log(props.role, props.name);
 
-  if (!tokenPresence) {
+  if (!role) {
     return (
       <nav>
         <li className="Logo">
@@ -18,11 +24,16 @@ export default function Navbar({ tokenPresence }) {
       <li className="Logo">
         <a href="/">SentinelShare</a>
       </li>
-      <li>
+      {/* <li>
         <a href="/dashboard">Dashboard</a>
-      </li>
+      </li> */}
+      <li>Welcome, {name}</li>
       <li>
-        <a href="/logout">Logout</a>
+        <form onSubmit={handleLogout}>
+          <div className="submitLogout">
+            <button type="submit">Logout</button>
+          </div>
+        </form>
       </li>
     </nav>
   );

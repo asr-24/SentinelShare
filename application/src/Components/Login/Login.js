@@ -2,29 +2,39 @@ import React, { useState } from "react";
 import { ReactPropTypes } from "react";
 import { Navigate } from "react-router-dom";
 import "./Login.css";
+import Authdb from "../../authdb.json";
 
-async function loginUser(credentials) {
-  console.log(credentials);
-  return fetch("http://localhost:8080/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(credentials),
-  }).then((data) => data.json());
+function Authenticate(credentials) {
+  // console.log(credentials);
+  var found = Authdb.filter(function (item) {
+    return item.username === credentials.username;
+  });
+  if (!found[0]) {
+    return null;
+  } else if (found[0].password === credentials.password) {
+    return found[0];
+  } else if (found[0].password != credentials.password) {
+    return "wrongpass";
+  }
 }
 
-export default function Login({ setToken }) {
+export default function Login({ setSessionStore }) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = await loginUser({
+    const authenticate = Authenticate({
       username,
       password,
     });
-    setToken(token);
+    if (!authenticate) {
+      alert("User not found");
+    } else if (authenticate === "wrongpass") {
+      alert("Wrong Password");
+    } else {
+      setSessionStore(authenticate);
+    }
   };
 
   return (
@@ -51,6 +61,6 @@ export default function Login({ setToken }) {
   );
 
   Login.ReactPropTypes = {
-    setToken: ReactPropTypes.func.isRequired,
+    verifyAuth: ReactPropTypes.func.isRequired,
   };
 }

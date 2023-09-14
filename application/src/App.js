@@ -5,35 +5,67 @@ import Login from "./Components/Login/Login";
 import Navbar from "./Components/Navbar/Navbar";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Logout from "./Components/Logout/Logout";
+import ClientDashboard from "./Components/ClientDashboard/ClientDashboard";
+import VendorDashboard from "./Components/VendorDashboard/VendorDashboard";
 
-function setToken(userToken) {
-  sessionStorage.setItem("token", JSON.stringify(userToken));
+function setSessionStore(found) {
+  sessionStorage.setItem("role", found.role);
+  sessionStorage.setItem("name", found.username);
   window.location.reload(false);
 }
 
-function getToken() {
-  const tokenString = sessionStorage.getItem("token");
-  const userToken = JSON.parse(tokenString);
-  return userToken?.token;
+function getRole() {
+  const role = sessionStorage.getItem("role");
+  return role;
+}
+
+function getUsername() {
+  const name = sessionStorage.getItem("name");
+  return name;
 }
 
 function App() {
-  const token = getToken();
-
-  if (!token) {
+  const role = getRole();
+  const name = getUsername();
+  console.log(name);
+  if (!role) {
     return (
       <div>
-        <Navbar tokenPresence={null} /> <Login setToken={setToken} />
+        <Navbar role={role} />
+        <Login setSessionStore={setSessionStore} />
+      </div>
+    );
+  } else if (role === "client") {
+    return (
+      <div>
+        <Navbar role={role} name={name} />
+        <ClientDashboard />
+      </div>
+    );
+  } else if (role === "vendor") {
+    return (
+      <div>
+        <Navbar role={role} name={name} />
+        <VendorDashboard />
+      </div>
+    );
+  } else if (role === "employee") {
+    return (
+      <div>
+        <Navbar role={role} name={name} />
+        <Dashboard />
       </div>
     );
   }
 
   return (
     <div className="App">
-      <Navbar tokenPresence={token} />
+      <Navbar role={role} />
       <BrowserRouter>
         <Routes>
-          <Route path="/dashboard" element={<Dashboard />}></Route>
+          <Route path="/vdashbaord" element={<VendorDashboard />} />
+          <Route path="/cdashboard" element={<ClientDashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
         </Routes>

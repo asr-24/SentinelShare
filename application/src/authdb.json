@@ -1,0 +1,5 @@
+[
+  { "username": "Rahul", "password": "Rahul123", "role": "client" },
+  { "username": "Kiran", "password": "Kiran789", "role": "employee" },
+  { "username": "CameraStudio", "password": "CS192", "role": "vendor" }
+]
