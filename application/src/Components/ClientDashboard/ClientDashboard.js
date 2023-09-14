@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import "./ClientDashboard.css";
 
-export default function Dashboard() {
+export default function ClientDashboard() {
   const [checked, setChecked] = useState(false);
 
   let content = "";
