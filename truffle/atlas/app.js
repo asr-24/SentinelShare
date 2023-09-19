@@ -11,7 +11,7 @@ const CLUSTER_URL = process.env.cluster_url;
 
 const uri = `mongodb+srv://${USER}:${PASSWORD}@${CLUSTER_URL}?retryWrites=true&w=majority`;
 
-// mongodb://arushirai110:mongodslaykween@ac-lg8qerh-shard-00-01.xjtdpm7.mongodb.net:27017,ac-lg8qerh-shard-00-02.xjtdpm7.mongodb.net:27017,ac-lg8qerh-shard-00-00.xjtdpm7.mongodb.net:27017/?authSource=admin&replicaSet=atlas-5ff4ev-shard-0&retryWrites=true&w=majority&ssl=true
+
 
 
 // The MongoClient is the object that references the connection to our
