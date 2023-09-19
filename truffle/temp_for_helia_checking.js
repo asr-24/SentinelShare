@@ -12,26 +12,27 @@ import finalFunction from './atlas/app_trial_two.js';
 
 async function importData() {
     let jsonData = await finalFunction();
-    console.log("hereeeee!!!");
-    console.log(jsonData);
+    return jsonData;
 }
 
-importData();
-
-//console.log(jsonData);
-
-// const helia = await createHelia()
-// const s = strings(helia)
-
-// const myImmutableAddress = await s.add('hello world')
-// console.log(typeof myImmutableAddress)
-
-// console.log(await s.get(myImmutableAddress))
 
 
-// const j = json(helia)
+async function run() {
+    let jsonData = await importData();
+    // console.log(jsonData);
 
-// const myImmutableAddress2 = await j.add({ hello: 'world' })
 
-// console.log(await j.get(myImmutableAddress2))
-// // { hello: 'world' }
+    // For Helia --
+
+    const helia = await createHelia();
+    const j = json(helia);
+
+    const CID = await j.add(jsonData); //pushing to IPFS 
+
+    console.log(`\n\n\n\nhelia!!!!\n\n CID is ${CID}`);
+    // console.log(await j.get(myImmutableAddress2));
+
+
+}
+
+run();
