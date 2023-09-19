@@ -24,5 +24,6 @@
     "multiformats": "^12.1.1",
     "mongodb": "^6.0.0",
     "web3": "^4.1.1"
-  }
+  },
+  "type": "module"
 }
