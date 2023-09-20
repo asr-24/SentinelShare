@@ -6,19 +6,16 @@ This project aims to create a tamperproof data sharing platform that can be used
 
 ## Folder structure
 
-`/application` - Reactjs initialized frontend app; server.js is Token API
-`/web3` - Truffle initialized to interact with smart contracts and Nodejs app to interact with IPFS and provide authentication
+`/frontend` - Reactjs initialized frontend app; server.js is Token API
+`/backend` - Truffle initialized to interact with smart contracts and Nodejs app to interact with Helia.
 
 ## Installation
 
-- Go to `/application` and run `npm install`
-- Go to `/web3` and run `npm install`
+Run `npm install` in the following folders:
 
-## Usage
-
-- In /application, run `node server.js`
-- Open a new terminal and run `npm start` to start Reactjs
-- In /web3, run `node app.js` to fetch the CID for the AuthDB
+- `backend/`
+- `backend/atlas`
+- `frontend/`
 
 ---
 
