@@ -30,7 +30,7 @@ async function run() {
     const CID = await j.add(jsonData); //pushing to IPFS 
 
     console.log(`\n\n\n\nhelia!!!!\n\n CID is ${CID}`);
-    // console.log(await j.get(myImmutableAddress2));
+    // console.log(await j.get(CID));
 
 
 }
