@@ -61,8 +61,6 @@ async function getDatabase() {
 
 
 async function getSingleDocument (user_id) {
-  const findQuery = { user_type: "vendor" };
-
   try {
     await client.connect();
 
@@ -112,8 +110,6 @@ async function getSingleDocument (user_id) {
 async function invokeGetSingleDocument(user_id) {
   try {
     let queryJSON = await getSingleDocument(user_id);
-    // console.log(queryJSON);
-    // console.log("here");
     return queryJSON;
     // console.log("heeee");
     
@@ -127,4 +123,4 @@ async function invokeGetSingleDocument(user_id) {
 // invokeGetSingleDocument("2001");
 
 module.exports = invokeGetSingleDocument;
-module.exports = getDatabase;
+// module.exports = getDatabase;
