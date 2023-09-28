@@ -73,20 +73,32 @@ async function getSingleDocument (user_id) {
     const query = { user_id : user_id };
     
     // Execute query
-    const credential = await collection.findOne(query);
-    // Print the document returned by findOne()
-    console.log(credential);
+    // const credential = await collection.findOne(query);
     
-    // const cursor = await collection.find({user_id : user_id});
-    // console.log(cursor);
-    // await cursor.forEach((credential) => {
-    //   queryDataJSON.push({
-    //     user_id: credential.user_id,
-    //     user_email: credential.user_email,
-    //     user_password: credential.user_password,
-    //     user_type: credential.user_type,
-    //   });
-    // });
+  
+    const cursor = await collection.findOne(query);
+
+    if (cursor) {
+      // Convert the MongoDB document to a JSON-like object
+      const queryDataJSON = {
+        user_id: cursor.user_id,
+        user_email: cursor.user_email,
+        user_password: cursor.user_password,
+        user_type: cursor.user_type,
+      };
+    
+      // queryDataJSON = JSON.stringify(jsonDocument, null, 2)
+      // console.log(queryDataJSON);
+      // console.log("inside here...");
+
+      await client.close(); //required to terminate program do not miss
+
+      return queryDataJSON;
+
+    } else {
+      console.log("Document not found");
+    }
+
 
   } catch (err) {
     console.error(
@@ -97,12 +109,14 @@ async function getSingleDocument (user_id) {
 }
 
 
-async function invokeGetSingleDocument() {
+async function invokeGetSingleDocument(user_id) {
   try {
-    let queryJSON = await getSingleDocument("2001");;
+    let queryJSON = await getSingleDocument(user_id);
+    // console.log(queryJSON);
+    // console.log("here");
     return queryJSON;
     // console.log("heeee");
-    // console.log(queryDataJSON);
+    
   } catch (error) {
     console.dir(error);
     // Handle errors here.
@@ -110,7 +124,7 @@ async function invokeGetSingleDocument() {
 
 }
 
-// invokeGetSingleDocument();
+// invokeGetSingleDocument("2001");
 
 module.exports = invokeGetSingleDocument;
 module.exports = getDatabase;
