@@ -58,4 +58,59 @@ async function getDatabase() {
   }
 }
 
+
+
+async function getSingleDocument (user_id) {
+  const findQuery = { user_type: "vendor" };
+
+  try {
+    await client.connect();
+
+    const database = client.db("sentinelShare");
+    const collection = database.collection("authentication");
+
+    // Query for a movie that has the title 'The Room'
+    const query = { user_id : user_id };
+    
+    // Execute query
+    const credential = await collection.findOne(query);
+    // Print the document returned by findOne()
+    console.log(credential);
+    
+    // const cursor = await collection.find({user_id : user_id});
+    // console.log(cursor);
+    // await cursor.forEach((credential) => {
+    //   queryDataJSON.push({
+    //     user_id: credential.user_id,
+    //     user_email: credential.user_email,
+    //     user_password: credential.user_password,
+    //     user_type: credential.user_type,
+    //   });
+    // });
+
+  } catch (err) {
+    console.error(
+      `Something went wrong trying to find the documents: ${err}\n`
+    );
+  }
+
+}
+
+
+async function invokeGetSingleDocument() {
+  try {
+    let queryJSON = await getSingleDocument("2001");;
+    return queryJSON;
+    // console.log("heeee");
+    // console.log(queryDataJSON);
+  } catch (error) {
+    console.dir(error);
+    // Handle errors here.
+  }
+
+}
+
+// invokeGetSingleDocument();
+
+module.exports = invokeGetSingleDocument;
 module.exports = getDatabase;
