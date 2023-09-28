@@ -28,6 +28,6 @@ async function getFromIPFS(cid) {
 }
 
 //Implementation to store and recieve data
-// addToIPFS().then(function (value) {
-//   getFromIPFS(value);
-// });
+addToIPFS().then(function (value) {
+  getFromIPFS(value);
+});
