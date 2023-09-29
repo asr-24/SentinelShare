@@ -27,7 +27,7 @@ function getUsername() {
 function App() {
   const role = getRole();
   const name = getUsername();
-  console.log(name);
+  // console.log(name);
   if (!role) {
     return (
       <div>

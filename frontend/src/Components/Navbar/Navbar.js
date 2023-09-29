@@ -5,10 +5,10 @@ export default function Navbar(props) {
   function handleLogout() {
     sessionStorage.clear();
   }
-  console.log(props);
+  // console.log(props);
   let role = props.role;
   let name = props.name;
-  console.log(props.role, props.name);
+  // console.log(props.role, props.name);
 
   if (!role) {
     return (
