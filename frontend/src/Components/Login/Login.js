@@ -36,7 +36,7 @@ export default function Login({ setSessionStore }) {
     };
 
     //Backend server hosting API (helia.js)
-    var url = "http://localhost:5000/";
+    var url = "http://localhost:3003/"; //updated since helia.js shifted to 3003
 
     //POST request to API to send credentials over
     axios

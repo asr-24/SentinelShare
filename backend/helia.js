@@ -10,8 +10,8 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 const app = express();
-//React port is 3000, Helia.js port is 5000
-const port = 5000;
+//React port is 3000, Helia.js port is 3003
+const port = 3003;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -65,7 +65,8 @@ async function authenticationForUser(user_id) {
   try {
     addAuthenticationLogToIPFS(user_id).then(function (value) {
       getFromIPFS(value).then(function (user_data) {
-        console.log(user_data.user_password);
+        console.log("HERE");
+        return user_data.user_password;
       });
     });
   } catch (error) {
@@ -74,30 +75,56 @@ async function authenticationForUser(user_id) {
   }
 }
 
-// // POST route for frontend to send login credentials to
-// app.post("/", async function (req, res) {
-//   //req.body.username contains the username
-//   //req.body.password contains the password
-//   let x = authenticationForUser(req.body.username).then(
-//     function (value) {
-//       console.log(req.body.password);
-//       console.log(x); //After promise is resolved, x should
-//       //be the same as req.body.password for successful authentication
-//     },
-//     function (error) {
-//       console.log(error);
-//     }
-//   );
-// });
+// POST route for frontend to send login credentials to
+app.post("/", async function (req, res) {
+  res.send("here");
+  //req.body.username contains the username
+  //req.body.password contains the password
 
-// app.listen(port, () => {
-//   console.log(`Example app listening on port ${port}`);
-// });
+  // //Trial 1 to resolve promise - DIDNT WORK
+  // authenticationForUser(req.body.username).then(
+  //   function (value) {
+  //     console.log("1 - ");
+  //     console.log(value);
+  //     console.log("2 - ");
+  //     console.log(req.body.password);
+  //   });
 
-//Implementation to store and recieve data
+  //Trial 2 to resolve promise 
+  authenticationForUser(req.body.username).then(
+    function (value) {
+      console.log("1 - ");
+      console.log(value);
+      console.log("2 - ");
+      console.log(req.body.password);
+    });
+
+
+  // let x = authenticationForUser(req.body.username).then(
+  //   function (value) {
+  //     console.log(req.body.password);
+  //     console.log(x); //After promise is resolved, x should
+  //     //be the same as req.body.password for successful authentication
+
+  //     if (x === req.body.password) {
+  //       console.log("You're in!");
+  //     }
+
+  //   },
+  //   function (error) {
+  //     console.log(error);
+  //   }
+  // );
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
+
+// // Implementation to store and recieve data
 // addToIPFS().then(function (value) {
 //   getFromIPFS(value);
 //   console.log(value);
 // });
 
-await authenticationForUser("2001"); //replace this 2001 with variable name as retrieved from the frontend
+// await authenticationForUser("2001"); //replace this 2001 with variable name as retrieved from the frontend
