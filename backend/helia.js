@@ -40,11 +40,17 @@ const j = json(helia);
 //   }
 // }
 
-async function addAuthenticationLogToIPFS(user_id) {
+async function addAuthenticationLogToIPFS (user_id, timestamp, auth)  {
   try {
-    let jsonData = await invokeGetSingleDocument(user_id);
-    const CID = await j.add(jsonData);
-    return CID;
+    let logData = {
+      "user_id" : user_id,
+      "timestamp": timestamp,
+      "status": auth
+    }; 
+    
+    // const CID = await j.add(jsonData);
+    return logData;
+
   } catch (error) {
     console.error("Error adding to IPFS:", error);
     throw error;
@@ -61,12 +67,12 @@ async function getFromIPFS(cid) {
   }
 }
 
+
+
 async function authenticationForUser(user_id) {
   try {
-    const value = await addAuthenticationLogToIPFS(user_id); // Wait for this async operation to complete
-    const user_data = await getFromIPFS(value); // Wait for this async operation to complete
 
-    console.log("HERE");
+    let user_data = await invokeGetSingleDocument(user_id);
     console.log(user_data.user_password);
     
     return user_data.user_password; // Return the user_password value
@@ -77,6 +83,7 @@ async function authenticationForUser(user_id) {
 }
 
 app.post("/", async function (req, res) {
+  const timestamp = new Date().toISOString(); 
   res.send("here");
 
   try {
@@ -89,11 +96,18 @@ app.post("/", async function (req, res) {
     console.log("2 - ");
     console.log(req.body.password);
 
+    let auth = '';
+
     if (x === req.body.password) {
       console.log("You're in!");
+      auth = "success";
     } else {
       console.log("Authentication failed!");
+      auth = "failure";
     }
+
+    console.log(addAuthenticationLogToIPFS(req.body.username, timestamp, auth));
+
   } catch (error) {
     console.log(error);
   }
