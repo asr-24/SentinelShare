@@ -74,25 +74,25 @@ async function authenticationForUser(user_id) {
   }
 }
 
-// POST route for frontend to send login credentials to
-app.post("/", async function (req, res) {
-  //req.body.username contains the username
-  //req.body.password contains the password
-  let x = authenticationForUser(req.body.username).then(
-    function (value) {
-      console.log(req.body.password);
-      console.log(x); //After promise is resolved, x should
-      //be the same as req.body.password for successful authentication
-    },
-    function (error) {
-      console.log(error);
-    }
-  );
-});
+// // POST route for frontend to send login credentials to
+// app.post("/", async function (req, res) {
+//   //req.body.username contains the username
+//   //req.body.password contains the password
+//   let x = authenticationForUser(req.body.username).then(
+//     function (value) {
+//       console.log(req.body.password);
+//       console.log(x); //After promise is resolved, x should
+//       //be the same as req.body.password for successful authentication
+//     },
+//     function (error) {
+//       console.log(error);
+//     }
+//   );
+// });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Example app listening on port ${port}`);
+// });
 
 //Implementation to store and recieve data
 // addToIPFS().then(function (value) {
@@ -100,4 +100,4 @@ app.listen(port, () => {
 //   console.log(value);
 // });
 
-// await authenticationForUser("2001"); //replace this 2001 with variable name as retrieved from the frontend
+await authenticationForUser("2001"); //replace this 2001 with variable name as retrieved from the frontend
