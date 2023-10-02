@@ -63,59 +63,42 @@ async function getFromIPFS(cid) {
 
 async function authenticationForUser(user_id) {
   try {
-    addAuthenticationLogToIPFS(user_id).then(function (value) {
-      getFromIPFS(value).then(function (user_data) {
-        console.log("HERE");
-        return user_data.user_password;
-      });
-    });
+    const value = await addAuthenticationLogToIPFS(user_id); // Wait for this async operation to complete
+    const user_data = await getFromIPFS(value); // Wait for this async operation to complete
+
+    console.log("HERE");
+    console.log(user_data.user_password);
+    
+    return user_data.user_password; // Return the user_password value
   } catch (error) {
     console.log("Error retrieving from IPFS");
     throw error;
   }
 }
 
-// POST route for frontend to send login credentials to
 app.post("/", async function (req, res) {
   res.send("here");
-  //req.body.username contains the username
-  //req.body.password contains the password
 
-  // //Trial 1 to resolve promise - DIDNT WORK
-  // authenticationForUser(req.body.username).then(
-  //   function (value) {
-  //     console.log("1 - ");
-  //     console.log(value);
-  //     console.log("2 - ");
-  //     console.log(req.body.password);
-  //   });
+  try {
+    console.log(req.body.username);
+    console.log(typeof req.body.username);
 
-  //Trial 2 to resolve promise 
-  authenticationForUser(req.body.username).then(
-    function (value) {
-      console.log("1 - ");
-      console.log(value);
-      console.log("2 - ");
-      console.log(req.body.password);
-    });
+    let x = await authenticationForUser(req.body.username);
+    console.log("1 - ");
+    console.log(x);
+    console.log("2 - ");
+    console.log(req.body.password);
 
-
-  // let x = authenticationForUser(req.body.username).then(
-  //   function (value) {
-  //     console.log(req.body.password);
-  //     console.log(x); //After promise is resolved, x should
-  //     //be the same as req.body.password for successful authentication
-
-  //     if (x === req.body.password) {
-  //       console.log("You're in!");
-  //     }
-
-  //   },
-  //   function (error) {
-  //     console.log(error);
-  //   }
-  // );
+    if (x === req.body.password) {
+      console.log("You're in!");
+    } else {
+      console.log("Authentication failed!");
+    }
+  } catch (error) {
+    console.log(error);
+  }
 });
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
