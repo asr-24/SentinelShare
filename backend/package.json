@@ -27,7 +27,7 @@
     "multiformats": "^12.1.1",
     "truffle-contract": "^4.0.31",
     "truffle-hdwallet-provider": "^1.0.17",
-    "web3": "^4.1.1"
+    "web3": "^4.1.2"
   },
   "type": "module"
 }

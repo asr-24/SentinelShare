@@ -1,15 +1,22 @@
-const Web3 = require('web3');
-const HDWalletProvider = require('@truffle/hdwallet-provider');
+import Web3 from 'web3';
+import HDWalletProvider from 'truffle-hdwallet-provider';
 
-// Specify your Sepolia test network's RPC URL
-const sepoliaRpcUrl = 'YOUR_SEPOLIA_TEST_NETWORK_RPC_URL';
 
-// Specify your Metamask mnemonic phrase
-const mnemonic = 'YOUR_METAMASK_MNEMONIC';
+const sepoliaRpcUrl = 'https://sepolia.infura.io/v3/';
 
-// Specify the contract ABI and address
-const contractABI = require('./build/contracts/AuthenticationLogging.json').abi;
+
+const mnemonic = 'drop spot bracket have piece canal domain ghost remind sword insect hero';
+
+
+import contractJSON from './build/contracts/AuthenticationLogging.json' assert { type: "json" };
+const contractABI = contractJSON.abi;
+console.log(contractABI);
+
+
+
+
 const contractAddress = '0xc6bbd4B6077D43dc11ddc66c951ea2677D7B999e';
+
 
 // Function to initialize web3
 async function initializeWeb3() {
@@ -31,6 +38,7 @@ async function interactWithContract(logData) {
 
     // Get the default account from the HDWalletProvider
     const defaultAccount = web3.currentProvider.addresses[0];
+    console.log(defaultAccount); //is correct
 
     // Create a transaction object
     const transactionObject = {
@@ -39,8 +47,32 @@ async function interactWithContract(logData) {
       data: encodedData,
     };
 
+    async function checkBalance() {
+        console.log("i am here - ")
+        try {
+          const balance = await web3.eth.getBalance("0x407d73d8a49eeb85d32cf465507dd71d507100c1");
+          console.log("Balance:", balance);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+      
+    checkBalance();
+      
+
+    console.log(transactionObject);
     // Sign and send the transaction
-    const transaction = await web3.eth.sendTransaction(transactionObject);
+    try {
+        // console.log("at least i came here");
+        const transaction = await web3.eth.sendTransaction(transactionObject);
+        console.log('Transaction Sent:', transaction);
+      } catch (error) {
+        console.error('Error Sending Transaction:', error);
+      }
+      
+
+    console.log("wow");
+    console.log(transaction);
     
     console.log('Transaction Hash:', transaction.transactionHash);
   } catch (error) {
