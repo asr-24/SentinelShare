@@ -40,7 +40,7 @@ const j = json(helia);
 //   }
 // }
 
-async function addAuthenticationLogToIPFS (user_id, timestamp, auth)  {
+async function addAuthenticationLogToETH (user_id, timestamp, auth)  {
   try {
     let logData = {
       "user_id" : user_id,
@@ -48,8 +48,9 @@ async function addAuthenticationLogToIPFS (user_id, timestamp, auth)  {
       "status": auth
     }; 
     
-    // const CID = await j.add(jsonData);
     return logData;
+
+    // invoke the interact function here and pass this logData variable to the the addLog function
 
   } catch (error) {
     console.error("Error adding to IPFS:", error);
@@ -66,7 +67,6 @@ async function getFromIPFS(cid) {
     throw error;
   }
 }
-
 
 
 async function authenticationForUser(user_id) {
@@ -106,7 +106,7 @@ app.post("/", async function (req, res) {
       auth = "failure";
     }
 
-    console.log(addAuthenticationLogToIPFS(req.body.username, timestamp, auth));
+    console.log(await addAuthenticationLogToETH(req.body.username, timestamp, auth));
 
   } catch (error) {
     console.log(error);
@@ -117,6 +117,9 @@ app.post("/", async function (req, res) {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+
+
 
 // // Implementation to store and recieve data
 // addToIPFS().then(function (value) {

@@ -25,6 +25,8 @@
     "json-loader": "^0.5.7",
     "mongodb": "^6.0.0",
     "multiformats": "^12.1.1",
+    "truffle-contract": "^4.0.31",
+    "truffle-hdwallet-provider": "^1.0.17",
     "web3": "^4.1.1"
   },
   "type": "module"
