@@ -30,17 +30,18 @@ async function interactWithContract(logData) {
   try {
     const web3 = await initializeWeb3();
     
-    // Initialize the contract instance
+    // Initializing the contract instance
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 
-    // Encode the data for the storeData function
+    // Encoding the data for the storeData function
     const encodedData = contract.methods.storeData(logData).encodeABI();
 
-    // Get the default account from the HDWalletProvider
+    // Getting the default account from the HDWalletProvider
     const defaultAccount = web3.currentProvider.addresses[0];
+    // web3.eth.getAccounts().then(console.log);
     console.log(defaultAccount); //is correct
 
-    // Create a transaction object
+    // Creating a transaction object
     const transactionObject = {
       from: defaultAccount,
       to: contractAddress,
@@ -48,12 +49,12 @@ async function interactWithContract(logData) {
     };
 
     async function checkBalance() {
-        console.log("i am here - ")
+        console.log("i am here -"); 
         try {
-          const balance = await web3.eth.getBalance("0x407d73d8a49eeb85d32cf465507dd71d507100c1");
-          console.log("Balance:", balance);
+            const balance = await web3.eth.getBalance("0x407d73d8a49eeb85d32cf465507dd71d507100c1");
+            console.log("Balance:", balance);
         } catch (error) {
-          console.error("Error:", error);
+            console.error("Error:", error);
         }
       }
       
