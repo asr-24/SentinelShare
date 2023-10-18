@@ -13,6 +13,7 @@
     "@helia/json": "^1.0.2",
     "@helia/strings": "^1.0.0",
     "@helia/unixfs": "^1.4.1",
+    "@truffle/hdwallet-provider": "^2.1.15",
     "blockstore-core": "^4.3.4",
     "blockstore-fs": "^1.1.6",
     "cors": "^2.8.5",

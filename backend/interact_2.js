@@ -1,22 +1,17 @@
-import Web3 from 'web3';
-import HDWalletProvider from 'truffle-hdwallet-provider';
+import Web3 from "web3";
+import HDWalletProvider from "truffle-hdwallet-provider";
 
+const sepoliaRpcUrl =
+  "https://sepolia.infura.io/v3/c557efceb61a41e7b11d471996a3f416";
 
-const sepoliaRpcUrl = 'https://sepolia.infura.io/v3/';
+const mnemonic =
+  "drop spot bracket have piece canal domain ghost remind sword insect hero";
 
-
-const mnemonic = 'drop spot bracket have piece canal domain ghost remind sword insect hero';
-
-
-import contractJSON from './build/contracts/AuthenticationLogging.json' assert { type: "json" };
+import contractJSON from "./build/contracts/AuthenticationLogging.json" assert { type: "json" };
 const contractABI = contractJSON.abi;
 console.log(contractABI);
 
-
-
-
-const contractAddress = '0xc6bbd4B6077D43dc11ddc66c951ea2677D7B999e';
-
+const contractAddress = "0xc6bbd4B6077D43dc11ddc66c951ea2677D7B999e";
 
 // Function to initialize web3
 async function initializeWeb3() {
@@ -29,7 +24,7 @@ async function initializeWeb3() {
 async function interactWithContract(logData) {
   try {
     const web3 = await initializeWeb3();
-    
+
     // Initializing the contract instance
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 
@@ -49,47 +44,47 @@ async function interactWithContract(logData) {
     };
 
     async function checkBalance() {
-        console.log("i am here -"); 
-        try {
-            const balance = await web3.eth.getBalance("0x407d73d8a49eeb85d32cf465507dd71d507100c1");
-            console.log("Balance:", balance);
-        } catch (error) {
-            console.error("Error:", error);
-        }
+      console.log("i am here -");
+      try {
+        const balance = await web3.eth.getBalance(
+          "0x407d73d8a49eeb85d32cf465507dd71d507100c1"
+        );
+        console.log("Balance:", balance);
+      } catch (error) {
+        console.error("Error:", error);
       }
-      
+    }
+
     checkBalance();
-      
 
     console.log(transactionObject);
     // Sign and send the transaction
     try {
-        // console.log("at least i came here");
-        const transaction = await web3.eth.sendTransaction(transactionObject);
-        console.log('Transaction Sent:', transaction);
-      } catch (error) {
-        console.error('Error Sending Transaction:', error);
-      }
-      
+      // console.log("at least i came here");
+      const transaction = await web3.eth.sendTransaction(transactionObject);
+      console.log("Transaction Sent:", transaction);
+    } catch (error) {
+      console.error("Error Sending Transaction:", error);
+    }
 
     console.log("wow");
     console.log(transaction);
-    
-    console.log('Transaction Hash:', transaction.transactionHash);
+
+    console.log("Transaction Hash:", transaction.transactionHash);
   } catch (error) {
-    console.error('Error interacting with contract:', error);
+    console.error("Error interacting with contract:", error);
   }
 }
 
 // Call the interaction function with logData
-const user_id = '1001';
-const timestamp = '2023-10-10';
-const auth = 'success';
+const user_id = "1001";
+const timestamp = "2023-10-10";
+const auth = "success";
 
 const logData = JSON.stringify({
-  "user_id": user_id,
-  "timestamp": timestamp,
-  "status": auth
+  user_id: user_id,
+  timestamp: timestamp,
+  status: auth,
 });
 
 interactWithContract(logData);
