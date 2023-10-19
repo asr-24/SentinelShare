@@ -81,7 +81,7 @@ async function interactWithContract(logData) {
   }
 }
 
-async function blockchainIPFSIntegration(logData) {
+export async function blockchainIPFSIntegration(logData) {
   const helia = await createHelia();
   const j = json(helia);
   
@@ -105,4 +105,6 @@ const logData = JSON.stringify({
   status: auth,
 });
 
-blockchainIPFSIntegration(logData);
+// blockchainIPFSIntegration(logData);
+
+// module.exports = blockchainIPFSIntegration;

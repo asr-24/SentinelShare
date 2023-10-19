@@ -5,6 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import getDatabase from "./atlas/app.js";
 import invokeGetSingleDocument from "./atlas/app.js";
+import { blockchainIPFSIntegration } from "./interact.js";
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
@@ -42,13 +43,15 @@ const j = json(helia);
 
 async function addAuthenticationLogToETH (user_id, timestamp, auth)  {
   try {
-    let logData = {
-      "user_id" : user_id,
-      "timestamp": timestamp,
-      "status": auth
-    }; 
+
+    const logData = JSON.stringify({
+      user_id: user_id,
+      timestamp: timestamp,
+      status: auth,
+    });
     
-    return logData;
+    console.log(typeof logData);
+    await blockchainIPFSIntegration(logData);
 
     // invoke the interact function here and pass this logData variable to the the addLog function
 
