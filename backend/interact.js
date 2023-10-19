@@ -81,19 +81,9 @@ async function interactWithContract(logData) {
   }
 }
 
-(async () => {
+async function blockchainIPFSIntegration(logData) {
   const helia = await createHelia();
   const j = json(helia);
-
-  const user_id = "1001";
-  const timestamp = "2023-10-10";
-  const auth = "success";
-
-  const logData = JSON.stringify({
-    user_id: user_id,
-    timestamp: timestamp,
-    status: auth,
-  });
   
   const transactionHash = await interactWithContract(logData);
 
@@ -102,4 +92,17 @@ async function interactWithContract(logData) {
   // Store CID on Helia
   const CID = await j.add({ transactionHash });
   console.log("CID:", CID);
-})();
+}
+
+
+const user_id = "1001";
+const timestamp = "2023-10-10";
+const auth = "success";
+
+const logData = JSON.stringify({
+  user_id: user_id,
+  timestamp: timestamp,
+  status: auth,
+});
+
+blockchainIPFSIntegration(logData);
