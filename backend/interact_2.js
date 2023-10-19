@@ -63,14 +63,15 @@ async function interactWithContract(logData) {
       // console.log("at least i came here");
       const transaction = await web3.eth.sendTransaction(transactionObject);
       console.log("Transaction Sent:", transaction);
+      console.log("Transaction Hash:", transaction.transactionHash);
     } catch (error) {
       console.error("Error Sending Transaction:", error);
     }
 
-    console.log("wow");
-    console.log(transaction);
+    // console.log("wow");
+    // console.log(transaction);
 
-    console.log("Transaction Hash:", transaction.transactionHash);
+    
   } catch (error) {
     console.error("Error interacting with contract:", error);
   }
