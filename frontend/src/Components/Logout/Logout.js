@@ -1,6 +1,5 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
-export default function Logout() {
-  // console.log("test");
-}
+export default function Logout() {}

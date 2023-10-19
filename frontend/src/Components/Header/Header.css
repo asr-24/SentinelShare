@@ -1,0 +1,13 @@
+.dashboard-nav {
+  color: white;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #113e83;
+  align-items: center;
+  height: 7.5vh;
+  /* box-shadow: rgb(255, 255, 255) 0px 1px 1px; */
+  position: relative;
+  z-index: 2;
+}

@@ -1,8 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import "./ClientDashboard.css";
+import Dashboard from "../Dashboard/Dashboard";
 
-export default function ClientDashboard() {
+export default function CreateRequest() {
   const [checked, setChecked] = useState(false);
 
   let content = "";
@@ -16,6 +16,7 @@ export default function ClientDashboard() {
 
   return (
     <div>
+      <Dashboard />
       <div className="formWrapper">
         <form className="clientForm">
           <label>Event Date:</label>

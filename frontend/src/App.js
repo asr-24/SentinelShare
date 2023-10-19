@@ -1,71 +1,24 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./Components/Login/Login";
-import Navbar from "./Components/Navbar/Navbar";
-import Dashboard from "./Components/Dashboard/Dashboard";
+import Sidebar from "./Components/Sidebar/Sidebar";
+import Header from "./Components/Header/Header";
 import Logout from "./Components/Logout/Logout";
-import ClientDashboard from "./Components/ClientDashboard/ClientDashboard";
-import VendorDashboard from "./Components/VendorDashboard/VendorDashboard";
-
-function setSessionStore(found) {
-  sessionStorage.setItem("role", found.role);
-  sessionStorage.setItem("name", found.username);
-  window.location.reload(false);
-}
-
-function getRole() {
-  const role = sessionStorage.getItem("role");
-  return role;
-}
-
-function getUsername() {
-  const name = sessionStorage.getItem("name");
-  return name;
-}
+import CreateRequest from "./Components/CreateRequest/CreateRequest";
+import PendingRequests from "./Components/PendingRequests/PendingRequests";
+import Cookies from "js-cookie";
+import Dashboard from "./Components/Dashboard/Dashboard";
 
 function App() {
-  const role = getRole();
-  const name = getUsername();
-  // console.log(name);
-  if (!role) {
-    return (
-      <div>
-        <Navbar role={role} />
-        <Login setSessionStore={setSessionStore} />
-      </div>
-    );
-  } else if (role === "client") {
-    return (
-      <div>
-        <Navbar role={role} name={name} />
-        <ClientDashboard />
-      </div>
-    );
-  } else if (role === "vendor") {
-    return (
-      <div>
-        <Navbar role={role} name={name} />
-        <VendorDashboard />
-      </div>
-    );
-  } else if (role === "employee") {
-    return (
-      <div>
-        <Navbar role={role} name={name} />
-        <Dashboard />
-      </div>
-    );
-  }
-
   return (
     <div className="App">
-      <Navbar role={role} />
+      {/* <Login /> */}
       <BrowserRouter>
         <Routes>
-          <Route path="/vdashbaord" element={<VendorDashboard />} />
-          <Route path="/cdashboard" element={<ClientDashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/pendingrequests" element={<PendingRequests />} />
+          <Route path="/createrequest" element={<CreateRequest />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
         </Routes>

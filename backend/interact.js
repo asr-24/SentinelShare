@@ -36,7 +36,7 @@ async function interactWithContract(logData) {
     // Getting the default account from the HDWalletProvider
     const defaultAccount = web3.currentProvider.addresses[0];
     // web3.eth.getAccounts().then(console.log);
-    console.log(defaultAccount); //is correct
+    // console.log(defaultAccount); //is correct
 
     // Creating a transaction object
     const transactionObject = {
@@ -46,7 +46,7 @@ async function interactWithContract(logData) {
     };
 
     async function checkBalance() {
-      console.log("i am here -");
+      // console.log("i am here -");
       try {
         const balance = await web3.eth.getBalance(
           "0x407d73d8a49eeb85d32cf465507dd71d507100c1"
@@ -59,23 +59,21 @@ async function interactWithContract(logData) {
 
     checkBalance();
 
-    console.log(transactionObject);
+    // console.log(transactionObject);
     // Sign and send the transaction
     try {
-      console.log("at least i came here");
+      // console.log("at least i came here");
       const transaction = await web3.eth.sendTransaction(transactionObject);
-      console.log("here here");
-      console.log("Transaction Sent:", transaction);
-      console.log("Transaction Hash:", transaction.transactionHash);
-      return transaction.transactionHash; 
+      // console.log("here here");
+      // console.log("Transaction Sent:", transaction);
+      // console.log("Transaction Hash:", transaction.transactionHash);
+      return transaction.transactionHash;
     } catch (error) {
       console.error("Error Sending Transaction:", error);
     }
 
     // console.log("wow");
     // console.log(transaction);
-
-    
   } catch (error) {
     console.error("Error interacting with contract:", error);
   }
@@ -84,16 +82,15 @@ async function interactWithContract(logData) {
 export async function blockchainIPFSIntegration(logData) {
   const helia = await createHelia();
   const j = json(helia);
-  
+
   const transactionHash = await interactWithContract(logData);
 
-  console.log("Transaction sent. Transaction Hash:", transactionHash);
+  // console.log("Transaction sent. Transaction Hash:", transactionHash);
 
   // Store CID on Helia
   const CID = await j.add({ transactionHash });
-  console.log("CID:", CID);
+  // console.log("CID:", CID);
 }
-
 
 const user_id = "1001";
 const timestamp = "2023-10-10";

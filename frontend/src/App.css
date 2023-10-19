@@ -5,3 +5,9 @@
   --pacific-cyan: #4ba3c3;
   --columbia-blue: #cce6f4;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}

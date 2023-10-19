@@ -41,20 +41,18 @@ const j = json(helia);
 //   }
 // }
 
-async function addAuthenticationLogToETH (user_id, timestamp, auth)  {
+async function addAuthenticationLogToETH(user_id, timestamp, auth) {
   try {
-
     const logData = JSON.stringify({
       user_id: user_id,
       timestamp: timestamp,
       status: auth,
     });
-    
+
     console.log(typeof logData);
     await blockchainIPFSIntegration(logData);
 
     // invoke the interact function here and pass this logData variable to the the addLog function
-
   } catch (error) {
     console.error("Error adding to IPFS:", error);
     throw error;
@@ -71,13 +69,12 @@ async function getFromIPFS(cid) {
   }
 }
 
-
 async function authenticationForUser(user_id) {
   try {
-
+    //Connect to MongoDB to retrieve authentication database
     let user_data = await invokeGetSingleDocument(user_id);
     console.log(user_data.user_password);
-    
+
     return user_data.user_password; // Return the user_password value
   } catch (error) {
     console.log("Error retrieving from IPFS");
@@ -86,43 +83,38 @@ async function authenticationForUser(user_id) {
 }
 
 app.post("/", async function (req, res) {
-  const timestamp = new Date().toISOString(); 
-  res.send("here");
-
+  const timestamp = new Date().toISOString();
   try {
     console.log(req.body.username);
     console.log(typeof req.body.username);
 
     let x = await authenticationForUser(req.body.username);
-    console.log("1 - ");
-    console.log(x);
-    console.log("2 - ");
-    console.log(req.body.password);
-
-    let auth = '';
+    //password from user input and database recieved, will now be compared
+    let auth = "";
 
     if (x === req.body.password) {
-      console.log("You're in!");
-      auth = "success";
+      console.log("Authentication successful");
+      auth = true;
     } else {
-      console.log("Authentication failed!");
-      auth = "failure";
+      console.log("Authentication failed");
+      auth = false;
     }
 
-    console.log(await addAuthenticationLogToETH(req.body.username, timestamp, auth));
+    console.log("sending auth back");
+    res.send(auth);
+    console.log("sent auth back");
 
+    console.log(
+      await addAuthenticationLogToETH(req.body.username, timestamp, auth)
+    );
   } catch (error) {
     console.log(error);
   }
 });
 
-
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-
-
-
 
 // // Implementation to store and recieve data
 // addToIPFS().then(function (value) {

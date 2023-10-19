@@ -1,9 +1,14 @@
 import React from "react";
+import Sidebar from "../Sidebar/Sidebar";
+import Header from "../Header/Header";
 
-export default function Dashboard() {
+function Dashboard() {
   return (
     <div>
-      <h1>Employee Dashboard</h1>
+      <Header />
+      <Sidebar />
     </div>
   );
 }
+
+export default Dashboard;

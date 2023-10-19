@@ -4,53 +4,49 @@ import { Navigate } from "react-router-dom";
 import sha256 from "js-sha256";
 import "./Login.css";
 import axios from "axios";
-// import Authdb from "../../authdb.json";
+import Cookies from "js-cookie";
 
-function Authenticate(credentials) {
-  // console.log(credentials);
-  // var found = Authdb.filter(function (item) {
-  //   return item.username === credentials.username;
-  // });
-  // if (!found[0]) {
-  //   return null;
-  // } else if (found[0].password === credentials.password) {
-  //   return found[0];
-  // } else if (found[0].password != credentials.password) {
-  //   return "wrongpass";
-  // }
-  // const x = fetch("/authenticate").then(function (response) {
-  //   console.log(response);
-  // });
-}
-
-export default function Login({ setSessionStore }) {
+export default function Login() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    //create JSON object of credentials
+  function authenticateUser(username, password) {
+    var url = "http://localhost:3003/";
     var credentials = {
       username: username,
       password: sha256(password),
     };
 
-    //Backend server hosting API (helia.js)
-    var url = "http://localhost:3003/"; //updated since helia.js shifted to 3003
-
-    //POST request to API to send credentials over
+    console.log("Sending post request through Axios ");
     axios
       .post(url, credentials)
-      .then((response) => console.log(response))
+      .then(function (response) {
+        console.log(response.data);
+        if (response.data == true) {
+          const userData = {
+            username,
+            password,
+          };
+          const expirationTime = new Date(new Date().getTime() + 60000);
+          Cookies.set("auth", JSON.stringify(userData), {
+            expires: expirationTime,
+          });
+          return true;
+        } else if (response.data == false) {
+          return false;
+        }
+      })
       .catch((e) => console.log(e));
+  }
 
-    // if (!authenticate) {
-    //   alert("User not found");
-    // } else if (authenticate === "wrongpass") {
-    //   alert("Wrong Password");
-    // } else {
-    //   setSessionStore(authenticate);
-    // }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const isAuthenticated = authenticateUser(username, password);
+    if (isAuthenticated) {
+      Navigate("/dashboard");
+    } else {
+      console.log("Failed");
+    }
   };
 
   return (
@@ -59,12 +55,17 @@ export default function Login({ setSessionStore }) {
         <div className="formInputs">
           <div>
             <label>Username</label> <br />
-            <input type="text" onChange={(e) => setUsername(e.target.value)} />
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </div>
           <div>
             <label>Password</label> <br />
             <input
               type="password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
@@ -75,8 +76,4 @@ export default function Login({ setSessionStore }) {
       </form>
     </div>
   );
-
-  Login.ReactPropTypes = {
-    verifyAuth: ReactPropTypes.func.isRequired,
-  };
 }
