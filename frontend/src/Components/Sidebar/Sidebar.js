@@ -1,20 +1,19 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Sidebar.css";
-import {
-  FiUser,
-  FiClock,
-  FiFilePlus,
-  FiFolderPlus,
-  FiBook,
-  FiLogOut,
-} from "react-icons/fi";
+import { FiUser, FiClock, FiFilePlus, FiLogOut } from "react-icons/fi";
+
+import Cookies from "js-cookie";
 
 function Sidebar() {
   const [sidebar, setSidebar] = useState(false);
+  const navigate = useNavigate();
 
   function handleLogout() {
-    sessionStorage.clear();
+    console.log("Logging out");
+    Cookies.remove("auth");
+    navigate("/login");
   }
 
   return (
@@ -31,12 +30,6 @@ function Sidebar() {
             <li>
               <FiFilePlus />
             </li>
-            <li>
-              <FiFolderPlus />
-            </li>
-            <li>
-              <FiBook />
-            </li>
           </div>
           <div className="dashboard-sidebar-icons--user">
             <li>
@@ -52,14 +45,10 @@ function Sidebar() {
             <div className="dashboard-sidebar-text--actions">
               <a href="/pendingrequest">Pending Requests</a>
               <a href="/createrequest">Create Request</a>
-              <a href="/createcontract">Create Contract</a>
-              <a href="/viewdocs">View Documents</a>
             </div>
             <div className="dashboard-sidebar-text--user">
               <a href="/profile">Profile</a>
-              <a href="/logout" onClick={handleLogout()}>
-                Logged Out
-              </a>
+              <a onClick={handleLogout}>Log Out</a>
             </div>
           </div>
         )}

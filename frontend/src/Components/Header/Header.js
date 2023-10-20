@@ -2,7 +2,7 @@ import React from "react";
 import "./Header.css";
 
 function Header() {
-  var Name = "Yash";
+  var Name = sessionStorage.getItem("name");
 
   return (
     <div>
