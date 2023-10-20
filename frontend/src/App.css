@@ -11,3 +11,8 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.page {
+  margin-left: 6ch;
+  padding: 1rem;
+}
