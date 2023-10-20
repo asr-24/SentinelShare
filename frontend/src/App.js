@@ -21,7 +21,7 @@ function App() {
   return (
     <div className="App">
       {isAuthenticated && (
-        <div>
+        <div className="dashboard">
           <Header />
           <Sidebar />
         </div>

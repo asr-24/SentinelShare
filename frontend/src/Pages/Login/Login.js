@@ -26,6 +26,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoginErrorState(false);
     setLoggingIn(true);
 
     var url = "http://localhost:3003/";
@@ -43,6 +44,7 @@ export default function Login() {
     sessionStorage.setItem("type", response.data.userType);
 
     if (response.data.auth) {
+      setLoggingIn(false);
       const userData = {
         username,
         password,

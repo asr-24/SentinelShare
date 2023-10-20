@@ -43,7 +43,7 @@ function Sidebar() {
         {sidebar && (
           <div className="dashboard-sidebar-text">
             <div className="dashboard-sidebar-text--actions">
-              <a href="/pendingrequest">Pending Requests</a>
+              <a href="/pendingrequests">Pending Requests</a>
               <a href="/createrequest">Create Request</a>
             </div>
             <div className="dashboard-sidebar-text--user">
