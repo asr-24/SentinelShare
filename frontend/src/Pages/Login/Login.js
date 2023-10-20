@@ -42,6 +42,7 @@ export default function Login() {
 
     sessionStorage.setItem("name", response.data.userEmail);
     sessionStorage.setItem("type", response.data.userType);
+    sessionStorage.setItem("userid", response.data.userId);
 
     if (response.data.auth) {
       setLoggingIn(false);

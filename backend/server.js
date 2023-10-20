@@ -46,6 +46,7 @@ app.post("/", async function (req, res) {
     let data = await authenticationForUser(req.body.username);
     let userEmail = data.user_email;
     let userType = data.user_type;
+    let userId = data.user_id;
     let auth = "";
 
     if (data.user_password === req.body.password) {
@@ -59,6 +60,7 @@ app.post("/", async function (req, res) {
     var responseData = {
       userEmail,
       userType,
+      userId,
       auth,
     };
 

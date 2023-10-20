@@ -7,6 +7,7 @@ import Sidebar from "./Components/Sidebar/Sidebar";
 import PendingRequests from "./Pages/PendingRequests/PendingRequests";
 import CreateRequest from "./Pages/CreateRequest/CreateRequest";
 import Cookies from "js-cookie";
+import Profile from "./Pages/Profile/Profile";
 
 function App() {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/pendingrequests" element={<PendingRequests />} />
         <Route path="/createrequest" element={<CreateRequest />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
   );
