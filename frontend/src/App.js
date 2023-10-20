@@ -11,10 +11,12 @@ import Cookies from "js-cookie";
 import Dashboard from "./Components/Dashboard/Dashboard";
 
 function App() {
+
+  const [sessionStorage, setSessionStorage] = useState(false)
+
   return (
+    <BrowserRouter>
     <div className="App">
-      {/* <Login /> */}
-      <BrowserRouter>
         <Routes>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/pendingrequests" element={<PendingRequests />} />
@@ -22,8 +24,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
         </Routes>
-      </BrowserRouter>
     </div>
+    </BrowserRouter>
   );
 }
 

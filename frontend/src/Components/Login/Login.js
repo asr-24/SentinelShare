@@ -1,53 +1,62 @@
 import React, { useState } from "react";
 import { ReactPropTypes } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import sha256 from "js-sha256";
 import "./Login.css";
 import axios from "axios";
 import Cookies from "js-cookie";
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
-  function authenticateUser(username, password) {
+  // async function authenticateUser(username, password) {
+  //   var url = "http://localhost:3003/";
+  //   var credentials = {
+  //     username: username,
+  //     password: sha256(password),
+  //   };
+
+  //   console.log("Sending post request through Axios ");
+    // axios
+    //   .post(url, credentials)
+    //   .then(function (response) {
+    //     console.log(response.data);
+    //     if(response){
+    //       const userData = {
+    //         username, password,
+    //       }
+    //       const expirationTime = new Date(new Date().getTime() + 60000);
+    //       Cookies.set('auth', JSON.stringify(userData), {expires: expirationTime});
+    //     }
+    //     return true
+    //   })
+    //   .catch((e) => {console.log(e); return false});
+  //   const response = await axios.post(url, credentials);
+  //   console.log(response.data);
+  // }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     var url = "http://localhost:3003/";
     var credentials = {
       username: username,
       password: sha256(password),
     };
 
-    console.log("Sending post request through Axios ");
-    axios
-      .post(url, credentials)
-      .then(function (response) {
-        console.log(response.data);
-        if (response.data == true) {
-          const userData = {
-            username,
-            password,
-          };
-          const expirationTime = new Date(new Date().getTime() + 60000);
-          Cookies.set("auth", JSON.stringify(userData), {
-            expires: expirationTime,
-          });
-          return true;
-        } else if (response.data == false) {
-          return false;
-        }
-      })
-      .catch((e) => console.log(e));
-  }
+    const response = await axios.post(url, credentials);
+    console.log(response.data);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const isAuthenticated = authenticateUser(username, password);
-    if (isAuthenticated) {
-      Navigate("/dashboard");
+    if (response.data) {
+      navigate("/dashboard");
     } else {
-      console.log("Failed");
+      console.log("Authentication Failed");
     }
   };
+
 
   return (
     <div className="formWrapper">
