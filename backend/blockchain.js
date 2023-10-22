@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import HDWalletProvider from "truffle-hdwallet-provider";
+import HDWalletProvider from "@truffle/hdwallet-provider";
 import { createHelia } from "helia";
 import { json } from "@helia/json";
 
