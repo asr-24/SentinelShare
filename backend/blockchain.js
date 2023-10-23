@@ -42,18 +42,19 @@ async function interactWithContract(logData) {
       data: encodedData,
     };
 
-    async function checkBalance() {
-      try {
-        const balance = await web3.eth.getBalance(
-          "0x407d73d8a49eeb85d32cf465507dd71d507100c1"
-        );
-        console.log("Balance:", balance);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    }
+    // async function checkBalance() {
+    //   try {
+    //     const balance = await web3.eth.getBalance(
+    //       "0x407d73d8a49eeb85d32cf465507dd71d507100c1"
+    //     );
+    //     console.log("Balance:", balance);
+    //   } catch (error) {
+    //     console.error("Error:", error);
+    //   }
+    // }
 
-    checkBalance();
+    // checkBalance();
+    
     try {
       const transaction = await web3.eth.sendTransaction(transactionObject);
       return transaction.transactionHash;
@@ -76,12 +77,12 @@ export async function blockchainIPFSIntegration(logData) {
   console.log("Added transaction hash to Helia, CID: ", CID);
 }
 
-const user_id = "1001";
-const timestamp = "2023-10-10";
-const auth = "success";
+// const user_id = "1001";
+// const timestamp = "2023-10-10";
+// const auth = "success";
 
-const logData = JSON.stringify({
-  user_id: user_id,
-  timestamp: timestamp,
-  status: auth,
-});
+// const logData = JSON.stringify({
+//   user_id: user_id,
+//   timestamp: timestamp,
+//   status: auth,
+// });

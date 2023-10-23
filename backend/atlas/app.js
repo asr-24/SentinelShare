@@ -37,6 +37,7 @@ async function getSingleDocument(user_id) {
       };
 
       console.log("Document found\n");
+      console.log(queryDataJSON);
       return queryDataJSON;
     } else {
       console.log("Document not found");
@@ -48,4 +49,50 @@ async function getSingleDocument(user_id) {
   }
 }
 
-module.exports = getSingleDocument;
+async function addNewEventDetails(event_date, 
+                                  event_time, 
+                                  event_type, 
+                                  event_theme_type, 
+                                  event_venue_type, 
+                                  event_guest_added, 
+                                  event_guest_list_url
+                                  ) {
+  try {
+    await client.connect();
+    console.log("Client connected\n");
+    const database = client.db("sentinelShare");
+    console.log("Database connected\n");
+    const collection = database.collection("eventDetails");
+
+    const record = {
+      event_date: event_date, 
+      event_time: event_time, 
+      event_type: event_type, 
+      event_theme_type: event_theme_type, 
+      event_venue_type: event_venue_type, 
+      event_guest_added: event_guest_added, 
+      event_guest_list_url: event_guest_list_url
+      };
+
+    const result = await collection.insertOne(record);
+
+    console.log(`The record was inserted with the _id: ${result.insertedId}`);
+
+  } catch (err) {
+    console.error(
+      `Something went wrong trying to push the document: ${err}\n`
+    );
+  }
+}
+
+
+// module.exports = getSingleDocument, addNewEventDetails;
+
+addNewEventDetails ("string_event_date", 
+                    "string_event_time", 
+                    "formal/ casual/ party/ wedding_event_type", 
+                    "dark/ warm/ light/ pastels/ monochrome_event_theme_type", 
+                    "small/ medium/ big/ large_event_venue_type", 
+                    "yes/ no_event_guest_added", 
+                    "event_guest_list_url");
+

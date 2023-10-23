@@ -1,17 +1,58 @@
 import React from "react";
+import { useState } from 'react'
 import "./CreateRequest.css";
+import axios from "axios";
 
 function CreateRequest() {
+
+  const [errMessage, setErrMessage] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(false);
+  const [eventDate, setEventDate] = useState();
+  const [eventTime, setEventTime] = useState();
+  const [eventType, setEventType] = useState();
+  const [eventThemeType, setEventThemeType] = useState();
+  const [eventVenueType, setEventVenueType] = useState();
+
+  const handeSubmit = async (e) =>{
+    e.preventDefault();
+
+    var user_id = sessionStorage.getItem("user_id")
+    var url = "http://localhost:3003/createrequest"
+
+    var sentRequestData = {
+      user_id: user_id,
+      event_date: eventDate,
+      event_time: eventTime,
+      event_type: eventType,
+      event_theme_type: eventThemeType,
+      event_venue_type: eventVenueType,
+    }
+
+    const response = await axios.post(url, sentRequestData).catch((e) => {console.log(e)})
+    console.log(response.data)
+
+    if(response.data === false){
+      setErrMessage = false;
+    }
+  }
+
+
   return (
     <div className="page">
       <h1>Create Request</h1>
-      <form className="createrequest-form">
+      {errMessage &&
+        <div className="error-message">Error, request not sent</div>
+      }
+      {successMessage && 
+        <div className="success-message">Request sent</div>
+      }
+      <form className="createrequest-form" onSubmit={handeSubmit}>
         <label for="event_date">Date:</label>
-        <input name="event_date" type="date"></input>
+        <input name="event_date" value={eventDate} type="date"></input>
         <label for="event_time">Time:</label>
-        <input name="event_time" type="time"></input>
+        <input name="event_time" value={eventTime} type="time"></input>
         <label for="event_type">Theme Type:</label>
-        <select name="event_type">
+        <select name="event_type" value={eventType}>
           <option>Formal</option>
           <option>Casual</option>
           <option>Party</option>

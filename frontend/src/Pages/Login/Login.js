@@ -17,7 +17,6 @@ export default function Login() {
   const [loginErrMessage, setLoginErrMessage] = useState();
 
   const isAuthenticated = !!Cookies.get("auth");
-
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/");
