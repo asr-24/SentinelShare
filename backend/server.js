@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-async function addAuthenticationLogToETH(use_case, user_id, timestamp, auth) {
+async function addLogToETH(use_case, user_id, timestamp, auth) {
   
   let logData = ''; 
 
@@ -96,7 +96,7 @@ app.post(use_case_1, async function (req, res) { //Function for Use Case 1: Auth
     res.send(responseData);
 
     console.log(
-      await addAuthenticationLogToETH(1, req.body.username, timestamp, auth)
+      await addLogToETH(1, req.body.username, timestamp, auth)
     );
   } catch (error) {
     console.log(error);
@@ -132,22 +132,24 @@ app.post(use_case_2, async function (req, res) { //Function for Use Case 2: Crea
     const event_theme_type = req.body.event_theme_type; 
     const event_venue_type = req.body.event_venue_type;
     const event_guest_added = req.body.event_guest_added;
-    const event_guest_list_ipfs_cid = req.body.event_guest_list_ipfs_cid;
+    const event_guest_list_url = req.body.event_guest_list_url;
 
 
-    var responseData = {
-      userEmail,
-      userType,
-      userId,
-      auth,
-    };
+    // var responseData = {
+    //   userEmail,
+    //   userType,
+    //   userId,
+    //   auth,
+    // };
+
+    // res.send(responseData);
 
     //After successful storage in database and then after successful
     //addition to IPFS, send a boolean true through res.send(true)
     //If fails in either step, send res.send(false)
 
     console.log(
-      await addAuthenticationLogToETH(2,  
+      await addLogToETH(2,  
                                           event_date, 
                                           event_time, 
                                           event_type, 
