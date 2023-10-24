@@ -86,13 +86,48 @@ async function addNewEventDetails(event_date,
 }
 
 
-// module.exports = getSingleDocument, addNewEventDetails;
+async function eventDataForVHDashboard(event_id) {
+  try {
+    await client.connect();
+    console.log("Client connected\n");
+    const database = client.db("sentinelShare");
+    console.log("Database connected\n");
+    const collection = database.collection("eventDetails");
 
-addNewEventDetails ("string_event_date", 
-                    "string_event_time", 
-                    "formal/ casual/ party/ wedding_event_type", 
-                    "dark/ warm/ light/ pastels/ monochrome_event_theme_type", 
-                    "small/ medium/ big/ large_event_venue_type", 
-                    "yes/ no_event_guest_added", 
-                    "event_guest_list_url");
+        const query = { event_id: event_id };
+
+        // console.log(query);
+
+        const cursor = await collection.findOne(query);
+        
+        if (cursor) {
+        const queryDataJSON = {
+            event_date: cursor.event_date,
+            event_time: cursor.event_time,
+            event_type: cursor.event_type,
+            event_theme_type: cursor.event_theme_type,
+            event_venue_type: cursor.event_venue_type
+        };
+
+        console.log("Document found\n");
+  
+        await client.close();
+
+        return queryDataJSON;
+
+        } else {
+        console.log("Document not found");
+        }
+    } catch (err) {
+        console.error(
+        `Something went wrong trying to find the documents: ${err}\n`
+        );
+    } 
+}
+
+module.exports = getSingleDocument, addNewEventDetails, eventDataForVHDashboard;
+
+// (async () => {
+//   console.log(await eventDataForVHDashboard("001"));
+// })();
 
