@@ -50,9 +50,7 @@ export default function Login() {
         password,
       };
       console.log("Setting cookies");
-      Cookies.set("auth", JSON.stringify(userData), {
-        expires: 7,
-      });
+      Cookies.set("auth", JSON.stringify(userData), {});
       navigate("/");
     } else {
       document.getElementById("login-form").reset();

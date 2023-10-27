@@ -1,11 +1,12 @@
 .dashboard-sidebar {
   width: 26ch;
   position: fixed;
+  /* margin-top: 50px; */
 }
 
 .dashboard-sidebar-text {
   position: fixed;
-  top: 7.5vh;
+  top: 50px;
   left: 0;
   background: rgb(27, 47, 77);
   background: linear-gradient(
@@ -16,7 +17,7 @@
   width: 20ch;
   display: flex;
   flex-direction: column;
-  height: 92.5vh;
+  height: calc(100vh - 50px);
   color: white;
   list-style: none;
   justify-content: space-between;
@@ -47,7 +48,7 @@
   width: 6ch;
   display: flex;
   flex-direction: column;
-  height: 92.5vh;
+  height: calc(100vh - 50px);
   color: white;
   list-style: none;
   justify-content: space-between;

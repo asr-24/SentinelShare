@@ -1,4 +1,8 @@
 .dashboard-nav {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
   color: white;
   list-style: none;
   display: flex;
@@ -6,8 +10,12 @@
   padding: 1rem;
   background-color: #113e83;
   align-items: center;
-  height: 7.5vh;
+  height: 50px;
   /* box-shadow: rgb(255, 255, 255) 0px 1px 1px; */
-  position: relative;
   z-index: 2;
+}
+
+.dashboard-nav a {
+  color: white;
+  text-decoration: none;
 }

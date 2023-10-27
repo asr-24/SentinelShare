@@ -1,6 +1,44 @@
 .createrequest-form {
   display: flex;
   flex-direction: column;
+  gap: 2rem;
   max-width: 40ch;
   margin: 5rem auto;
+  padding: 2rem;
+  border-radius: 5px;
+  /* box-shadow: 1px 1px 4px rgb(163, 163, 163); */
+}
+
+.createrequest-form input {
+  font-size: 1rem;
+}
+
+.createrequest-form div {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+select {
+  font-size: 2rem;
+}
+
+.createrequest-form input[type="submit"] {
+  width: 150px;
+  border: none;
+  padding: 0.7rem;
+  background: rgb(70, 110, 223);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 2.5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.createrequest-form input[type="submit"]:hover {
+  background-color: #0c2d5e;
+}
+
+.createrequest-form input[type="select"] {
+  background-color: red;
 }

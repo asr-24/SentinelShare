@@ -8,7 +8,9 @@ function Header() {
     <div>
       <nav className="dashboard-nav">
         <li>
-          <h1>Dashboard</h1>
+          <a href="/">
+            <h1>Dashboard</h1>
+          </a>
         </li>
         <li>Hello, {Name}</li>
       </nav>

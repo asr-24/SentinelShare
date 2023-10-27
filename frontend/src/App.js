@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./Pages/Login/Login";
 import Header from "./Components/Header/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
+import Home from "./Pages/Home/Home";
 import PendingRequests from "./Pages/PendingRequests/PendingRequests";
 import CreateRequest from "./Pages/CreateRequest/CreateRequest";
 import Cookies from "js-cookie";
@@ -28,6 +29,7 @@ function App() {
         </div>
       )}
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/pendingrequests" element={<PendingRequests />} />
         <Route path="/createrequest" element={<CreateRequest />} />
