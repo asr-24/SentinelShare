@@ -158,18 +158,17 @@ async function getLastEventID() {
       }
 }
 
-// module.exports = getSingleDocument, addNewEventDetails, eventDataForVHDashboard, getLastEventID;
+module.exports = getSingleDocument, addNewEventDetails, eventDataForVHDashboard, getLastEventID;
 
 // (async () => {
 //   console.log(await eventDataForVHDashboard("001"));
 // })();
 
-async function trial_for_getLastEventID () {
-  let last_event_id = await getLastEventID();
-  console.log(last_event_id);
-  const event_id = last_event_id+1;
-  console.log(event_id);
+// async function trial_for_getLastEventID () {
+//   let last_event_id = await getLastEventID();
+//   const event_id = (last_event_id+1).toString();
+//   console.log(event_id);
 
-}
+// }
 
-trial_for_getLastEventID();
+// trial_for_getLastEventID();

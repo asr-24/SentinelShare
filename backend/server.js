@@ -101,7 +101,7 @@ app.post(use_case_2, async function (req, res) { //Function for Use Case 2: Crea
   const user_id = "" // add yaha user_id; 
 
   let last_event_id = await getLastEventID();
-  const event_id = last_event_id+1;
+  const event_id = (last_event_id+1).toString();
 
   logData = JSON.stringify({
     user_id: user_id, 
@@ -135,9 +135,18 @@ app.post(use_case_2, async function (req, res) { //Function for Use Case 2: Crea
 app.post(use_case_3_VH_dashboard, async function (req, res) { //Function for Use Case 3: Vertical Head (Hospitality) Assigning Work to Vendors (Venue Manager/ Decorator) 
   //Sub-part: 1: VH Dashboard
 
-  
+
   let responseData = await eventDataForVHDashboard();
   
+  let vendor_type_choice = req.body.vendorChoice;
+
+  let vendorID = await getRandomVendorID(vendor_type_choice);
+
+  let responseData_2 = ""; //FEELS WRONG I DONT UNDERSTAND
+
+  if (vendorID != "false") {
+    
+  }
 
   logData = JSON.stringify({
     
