@@ -8,7 +8,7 @@ const CLUSTER_URL = process.env.cluster_url;
 
 console.log(USER);
 
-let uri = `mongodb+srv://${USER}:${PASSWORD}@${CLUSTER_URL}?retryWrites=true&w=majority`;
+let uri = `mongodb+srv://${USER}:${PASSWORD}@${CLUSTER_URL}?retryWrites=true&w=majority`; 
 
 const client = new MongoClient(
   uri,

@@ -1,4 +1,7 @@
-import GetSingleDocument from "./atlas/app.js";
+import getSingleDocument from "./atlas/app.js";
+import addNewEventDetails from "./atlas/app.js";
+import eventDataForVHDashboard from "./atlas/app.js";
+import getLastEventID from "./atlas/app.js";
 import { blockchainIPFSIntegration } from "./blockchain.js";
 import "dotenv/config";
 import express from "express";
@@ -12,38 +15,14 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-async function addLogToETH(use_case, user_id, timestamp, auth) {
+async function addLogToETH(logData) {
   
-  let logData = ''; 
-
-  if (use_case == 1) {
-
-    logData = JSON.stringify({
-      user_id: user_id,
-      timestamp: timestamp,
-      status: auth,
-    });
-
-    
-  } else if (use_case == 2) {
-
-    logData = JSON.stringify({
-      user_id: user_id,
-      timestamp: timestamp,
-      event_date: event_date, 
-      event_time: event_time, 
-      event_type: event_type, 
-      event_theme_type: event_theme_type, 
-      event_venue_type: event_venue_type, 
-      event_guest_added: event_guest_added, 
-      event_guest_list_url: event_guest_list_url
-    });
-
-  }
+  let logData = logData;
 
   try {
-    await blockchainIPFSIntegration(logData);
-    // invoke the interact function here and pass this logData variable to the the addLog function
+    let returnedValue = await blockchainIPFSIntegration(logData);
+    return returnedValue;
+    
   } catch (error) {
     console.error("Error adding to IPFS:", error);
     throw error;
@@ -54,7 +33,7 @@ async function addLogToETH(use_case, user_id, timestamp, auth) {
 
 async function authenticationForUser(user_id) {
   try {
-    let user_data = await GetSingleDocument(user_id);
+    let user_data = await getSingleDocument(user_id);
 
     return user_data;
   } catch (error) {
@@ -62,8 +41,12 @@ async function authenticationForUser(user_id) {
     throw error;
   }
 }
+
+
 const use_case_1 = "/";
-const use_case_2 = "/createrequest"; //UPDATE THIS
+const use_case_2 = "/createrequest"; 
+const use_case_3_VH_dashboard = ""; //UPDATE THIS
+const use_case_3_vendor_dashboard = ""; //UPDATE THIS TOO 
 
 
 
@@ -95,8 +78,14 @@ app.post(use_case_1, async function (req, res) { //Function for Use Case 1: Auth
 
     res.send(responseData);
 
+    let logData = JSON.stringify({
+      user_id: user_id,
+      timestamp: timestamp,
+      status: auth,
+    });
+
     console.log(
-      await addLogToETH(1, req.body.username, timestamp, auth)
+      await addLogToETH(logData)
     );
   } catch (error) {
     console.log(error);
@@ -106,63 +95,88 @@ app.post(use_case_1, async function (req, res) { //Function for Use Case 1: Auth
 
 
 app.post(use_case_2, async function (req, res) { //Function for Use Case 2: Creation of New Event
-
-//   Use Case 2:
-  // New Project from Client 
-  // Step1 – UseCase1
-  // Step 2 – ‘Request New Event’ Button
-  // Step 3 – Client enters the following information:
-        // Event Date,
-        // Event Time,
-        // Event Type (formal/ casual/ party/ wedding),
-        // Theme Type (dark/ warm/ light/ pastels/ monochrome),
-        // Venue Type (small/ medium/ big/ large),
-        // Guest List (yes -> [Guest Name/ Guest Phone/ Guest Email]/ no)
-  // Step 4 – Submit
   
   const timestamp = new Date().toISOString();
 
-  //Add log of new event creation on blockchain
+  const user_id = "" // add yaha user_id; 
+
+  let last_event_id = await getLastEventID();
+  const event_id = last_event_id+1;
+
+  logData = JSON.stringify({
+    user_id: user_id, 
+    timestamp: timestamp,
+    event_date: req.body.event_date,
+    event_time: req.body.event_time, 
+    event_type: req.body.event_type, 
+    event_theme_type: req.body.event_theme_type, 
+    event_venue_type: req.body.event_venue_type, 
+    event_guest_added: req.body.event_guest_added, 
+    event_guest_list_url: req.body.event_guest_list_url, 
+    event_id: event_id
+  });
+
 
   try {
-    // const user_id = add yaha user_id; 
-    const event_date = req.body.event_date;
-    const event_time = req.body.event_time; 
-    const event_type = req.body.event_type;
-    const event_theme_type = req.body.event_theme_type; 
-    const event_venue_type = req.body.event_venue_type;
-    const event_guest_added = req.body.event_guest_added;
-    const event_guest_list_url = req.body.event_guest_list_url;
+    let responseData_Atlas = await addNewEventDetails(logData);
+    let responseData_ETH = await addLogToETH(logData);
 
+    let responseData = responseData_Atlas && responseData_ETH; 
 
-    // var responseData = {
-    //   userEmail,
-    //   userType,
-    //   userId,
-    //   auth,
-    // };
-
-    // res.send(responseData);
-
-    //After successful storage in database and then after successful
-    //addition to IPFS, send a boolean true through res.send(true)
-    //If fails in either step, send res.send(false)
-
-    console.log(
-      await addLogToETH(2,  
-                                          event_date, 
-                                          event_time, 
-                                          event_type, 
-                                          event_theme_type, 
-                                          event_venue_type, 
-                                          event_guest_added, 
-                                          event_guest_list_url,
-                                          timestamp)
-    );
+    res.send(responseData);
+                    
   } catch (error) {
     console.log(error);
   }
 });
+
+
+
+app.post(use_case_3_VH_dashboard, async function (req, res) { //Function for Use Case 3: Vertical Head (Hospitality) Assigning Work to Vendors (Venue Manager/ Decorator) 
+  //Sub-part: 1: VH Dashboard
+
+  
+  let responseData = await eventDataForVHDashboard();
+  
+
+  logData = JSON.stringify({
+    
+  });
+
+
+  try {
+    let responseData = await addLogToETH(logData);
+                    
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+
+// Step 3 – ‘Assign to Venue Manager’/’Assign to ‘Decorator’ respectively 
+// Step 4 – Submit
+// Step 5 – Vendor: Use Case 1
+// Step 6 – Vendor sees the following on their dashboard:
+// If Vendor.Type == ‘Decorator’: Event Date,
+// Event Time,
+// Event Type (formal/ casual/ party/ wedding),
+// Theme Type (dark/ warm/ light/ pastels/ monochrome), Venue Type (small/ medium/ big/ large)
+// Else If Vendor.Type == ‘Venue Manager’: Event Date,
+// Event Time,
+// Venue Type (small/ medium/ big/ large)
+// Step 7 – Vendor adds the following information on their dashboard:
+// If Vendor.Type == ‘Decorator’: ‘Approved’/ ‘Rejected’
+// Else If Vendor.Type == ‘Venue Manager’:
+// ‘Approved’ -> ‘Add Venue Address’/ ‘Rejected’
+// Step 8 – Submit
+// Step 9 – Vertical Head (Hospitality): Use Case 1
+// Step 10 – (Step 2) + Vendor Response ‘Event Venue Address’ Step 11 – ‘Approve’
+//  13
+// Step 12 – Submit
+// Step 13 – Client: Use Case 1
+// Step 14 – Client sees contents from (Step 2) and Event Venue Address Step 15 – ‘Approve’
+
+
 
 
 app.listen(port, () => {

@@ -75,14 +75,7 @@ export async function blockchainIPFSIntegration(logData) {
   // Store CID on Helia
   const CID = await j.add({ transactionHash });
   console.log("Added transaction hash to Helia, CID: ", CID);
+  return true;
 }
 
-// const user_id = "1001";
-// const timestamp = "2023-10-10";
-// const auth = "success";
-
-// const logData = JSON.stringify({
-//   user_id: user_id,
-//   timestamp: timestamp,
-//   status: auth,
-// });
+         

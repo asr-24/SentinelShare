@@ -49,13 +49,16 @@ async function getSingleDocument(user_id) {
   }
 }
 
-async function addNewEventDetails(event_date, 
+async function addNewEventDetails(user_id,
+                                  timestamp, 
+                                  event_date,
                                   event_time, 
                                   event_type, 
                                   event_theme_type, 
                                   event_venue_type, 
                                   event_guest_added, 
-                                  event_guest_list_url
+                                  event_guest_list_url, 
+                                  event_id
                                   ) {
   try {
     await client.connect();
@@ -65,13 +68,16 @@ async function addNewEventDetails(event_date,
     const collection = database.collection("eventDetails");
 
     const record = {
-      event_date: event_date, 
+      user_id: user_id, 
+      timestamp: timestamp,
+      event_date: event_date,
       event_time: event_time, 
       event_type: event_type, 
       event_theme_type: event_theme_type, 
       event_venue_type: event_venue_type, 
       event_guest_added: event_guest_added, 
-      event_guest_list_url: event_guest_list_url
+      event_guest_list_url: event_guest_list_url, 
+      event_id: event_id
       };
 
     const result = await collection.insertOne(record);
@@ -84,7 +90,6 @@ async function addNewEventDetails(event_date,
     );
   }
 }
-
 
 async function eventDataForVHDashboard(event_id) {
   try {
@@ -125,9 +130,46 @@ async function eventDataForVHDashboard(event_id) {
     } 
 }
 
-module.exports = getSingleDocument, addNewEventDetails, eventDataForVHDashboard;
+async function getLastEventID() {
+  try {
+      await client.connect();
+      console.log("Client connected\n");
+      const database = client.db("sentinelShare");
+      console.log("Database connected\n");
+      const collection = database.collection("eventDetails");
+  
+      const query = { event_id: { $gte: "000" } }; 
+  
+      const cursor = await collection.find(query);
+
+      let queryDataJSON = {};
+      
+      while (await cursor.hasNext()) {
+          const entry = await cursor.next();
+          queryDataJSON['event_id'] = entry.event_id;
+        }
+      
+      return parseInt(queryDataJSON.event_id);
+      
+      } catch (err) {
+      console.error(
+          `Something went wrong trying to find the documents: ${err}\n`
+      );
+      }
+}
+
+// module.exports = getSingleDocument, addNewEventDetails, eventDataForVHDashboard, getLastEventID;
 
 // (async () => {
 //   console.log(await eventDataForVHDashboard("001"));
 // })();
 
+async function trial_for_getLastEventID () {
+  let last_event_id = await getLastEventID();
+  console.log(last_event_id);
+  const event_id = last_event_id+1;
+  console.log(event_id);
+
+}
+
+trial_for_getLastEventID();
