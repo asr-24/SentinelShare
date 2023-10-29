@@ -34,8 +34,9 @@ function CreateRequest() {
       console.log(e);
     });
 
+    console.log(response.data);
     if (response.data === false) {
-      setErrMessage = false;
+      setErrMessage(true);
     }
   };
 
@@ -48,7 +49,7 @@ function CreateRequest() {
       <form className="createrequest-form" onSubmit={handleSubmit}>
         <h2>Event form</h2>
         <div>
-          <label for="event_date">Date</label>
+          <label htmlFor="event_date">Date</label>
           <input
             name="event_date"
             value={eventDate}
@@ -57,7 +58,7 @@ function CreateRequest() {
           ></input>
         </div>
         <div>
-          <label for="event_time">Time</label>
+          <label htmlFor="event_time">Time</label>
           <input
             name="event_time"
             value={eventTime}
@@ -66,7 +67,7 @@ function CreateRequest() {
           ></input>
         </div>
         <div>
-          <label for="event_type">Event Type</label>
+          <label htmlFor="event_type">Event Type</label>
           <select
             name="event_type"
             value={eventType}
@@ -79,7 +80,7 @@ function CreateRequest() {
           </select>
         </div>
         <div>
-          <label for="event_theme_type">Theme Type</label>
+          <label htmlFor="event_theme_type">Theme Type</label>
           <select
             name="event_theme_type"
             onChange={(e) => setEventThemeType(e.target.value)}
@@ -92,7 +93,7 @@ function CreateRequest() {
           </select>
         </div>
         <div>
-          <label for="event_venue_type">Venue Type</label>
+          <label htmlFor="event_venue_type">Venue Type</label>
           <select
             name="event_venue_type"
             onChange={(e) => setEventVenueType(e.target.value)}

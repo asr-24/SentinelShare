@@ -20,6 +20,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 async function addLogToETH(logData) {
   try {
     let returnedValue = await blockchainIPFSIntegration(logData);
+    if (returnedValue == false) {
+      return false;
+    }
     return returnedValue;
   } catch (error) {
     console.error("Error adding to IPFS:", error);
@@ -90,6 +93,8 @@ app.post(use_case_2, async function (req, res) {
 
   const timestamp = new Date().toISOString();
 
+  let errorState;
+
   const user_id = ""; // add yaha user_id;
 
   let last_event_id = await getLastEventID();
@@ -114,9 +119,18 @@ app.post(use_case_2, async function (req, res) {
     let responseData_Atlas = await addNewEventDetails(logData);
     let responseData_ETH = await addLogToETH(logData);
 
+    if (responseData_ETH == false) {
+      console.log("error");
+    }
     let responseData = responseData_Atlas && responseData_ETH;
 
-    res.send(responseData);
+    if (responseData_ETH == false) {
+      errorState = false;
+      console.log(errorState);
+      res.send(errorState);
+    } else {
+      res.send(responseData);
+    }
   } catch (error) {
     console.log(error);
   }

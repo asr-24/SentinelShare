@@ -54,7 +54,7 @@ async function interactWithContract(logData) {
     // }
 
     // checkBalance();
-    
+
     try {
       const transaction = await web3.eth.sendTransaction(transactionObject);
       return transaction.transactionHash;
@@ -63,6 +63,7 @@ async function interactWithContract(logData) {
     }
   } catch (error) {
     console.error("Error interacting with contract:", error);
+    return false;
   }
 }
 
@@ -75,7 +76,9 @@ export async function blockchainIPFSIntegration(logData) {
   // Store CID on Helia
   const CID = await j.add({ transactionHash });
   console.log("Added transaction hash to Helia, CID: ", CID);
+
+  if (transactionHash == false) {
+    return false;
+  }
   return true;
 }
-
-         
