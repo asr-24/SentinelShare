@@ -31,7 +31,6 @@ async function interactWithContract(logData) {
 
     // Encoding the data for the storeData function
     const encodedData = contract.methods.storeData(logData).encodeABI();
-
     // Getting the default account from the HDWalletProvider
     const defaultAccount = web3.currentProvider.addresses[0];
 
@@ -71,6 +70,7 @@ export async function blockchainIPFSIntegration(logData) {
   const helia = await createHelia();
   const j = json(helia);
 
+  console.log(logData);
   const transactionHash = await interactWithContract(logData);
 
   // Store CID on Helia

@@ -8,6 +8,8 @@ function CreateRequest() {
   const [successMessage, setSuccessMessage] = useState(false);
   const [eventDate, setEventDate] = useState("");
   const [eventTime, setEventTime] = useState("");
+  const [guestList, setGuestList] = useState(false);
+  const [guestListURL, setGuestListURL] = useState("");
   const [eventType, setEventType] = useState("Formal");
   const [eventThemeType, setEventThemeType] = useState("Dark");
   const [eventVenueType, setEventVenueType] = useState("Small");
@@ -16,7 +18,7 @@ function CreateRequest() {
     e.preventDefault();
 
     var user_id = sessionStorage.getItem("userid");
-
+    console.log(user_id);
     var url = "http://localhost:3003/createrequest";
 
     var sentRequestData = {
@@ -26,6 +28,8 @@ function CreateRequest() {
       event_type: eventType,
       event_theme_type: eventThemeType,
       event_venue_type: eventVenueType,
+      event_guest_added: guestList,
+      event_guest_list_url: guestListURL,
     };
     const response = await axios.post(url, sentRequestData).catch((e) => {
       console.log(e);
@@ -100,6 +104,28 @@ function CreateRequest() {
             <option>Large</option>
           </select>
         </div>
+        <div>
+          <label htmlFor="guest_list">Guest List</label>
+          <input
+            type="checkbox"
+            name="guest_list"
+            onChange={(e) => {
+              setGuestList(e.target.checked);
+              console.log(guestList);
+            }}
+          ></input>
+        </div>
+        {guestList && (
+          <div>
+            <label htmlForfor="guest_list_url">Guest List URL</label>
+            <input
+              name="guest_list_url"
+              type="text"
+              onChange={(e) => setGuestListURL(e.target.value)}
+            ></input>
+          </div>
+        )}
+
         <input type="submit"></input>
       </form>
     </div>

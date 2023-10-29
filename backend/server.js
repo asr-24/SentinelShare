@@ -92,7 +92,7 @@ app.post(use_case_2, async function (req, res) {
 
   let errorState;
 
-  const user_id = ""; // add yaha user_id;
+  const user_id = req.body.user_id; // add yaha user_id;
 
   let last_event_id = await getLastEventID();
   const event_id = (last_event_id + 1).toString();
@@ -123,7 +123,6 @@ app.post(use_case_2, async function (req, res) {
 
     if (responseData_ETH == false) {
       errorState = false;
-      console.log(errorState);
       res.send(errorState);
     } else {
       res.send(responseData);
