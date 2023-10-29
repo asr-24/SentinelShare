@@ -1,7 +1,9 @@
-import getSingleDocument from "./atlas/app.js";
-import addNewEventDetails from "./atlas/app.js";
-import eventDataForVHDashboard from "./atlas/app.js";
-import getLastEventID from "./atlas/app.js";
+import {
+  getSingleDocument,
+  addNewEventDetails,
+  eventDataForVHDashboard,
+  getLastEventID,
+} from "./atlas/app.js";
 import { blockchainIPFSIntegration } from "./blockchain.js";
 import "dotenv/config";
 import express from "express";
@@ -16,19 +18,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 async function addLogToETH(logData) {
-  
-  let logData = logData;
-
   try {
     let returnedValue = await blockchainIPFSIntegration(logData);
     return returnedValue;
-    
   } catch (error) {
     console.error("Error adding to IPFS:", error);
     throw error;
   }
-  
-  
 }
 
 async function authenticationForUser(user_id) {
@@ -42,16 +38,14 @@ async function authenticationForUser(user_id) {
   }
 }
 
-
-const use_case_1 = "/";
-const use_case_2 = "/createrequest"; 
+const use_case_1 = "/login";
+const use_case_2 = "/createrequest";
 const use_case_3_VH_dashboard = ""; //UPDATE THIS
-const use_case_3_vendor_dashboard = ""; //UPDATE THIS TOO 
+const use_case_3_vendor_dashboard = ""; //UPDATE THIS TOO
 
-
-
-app.post(use_case_1, async function (req, res) { //Function for Use Case 1: Authentication
-
+app.post(use_case_1, async function (req, res) {
+  //Function for Use Case 1: Authentication
+  console.log("Use case 1");
   const timestamp = new Date().toISOString();
   try {
     let data = await authenticationForUser(req.body.username);
@@ -84,60 +78,56 @@ app.post(use_case_1, async function (req, res) { //Function for Use Case 1: Auth
       status: auth,
     });
 
-    console.log(
-      await addLogToETH(logData)
-    );
+    console.log(await addLogToETH(logData));
   } catch (error) {
     console.log(error);
   }
 });
 
+app.post(use_case_2, async function (req, res) {
+  //Function for Use Case 2: Creation of New Event
+  console.log("Use case 2 initiated");
 
-
-app.post(use_case_2, async function (req, res) { //Function for Use Case 2: Creation of New Event
-  
   const timestamp = new Date().toISOString();
 
-  const user_id = "" // add yaha user_id; 
+  const user_id = ""; // add yaha user_id;
 
   let last_event_id = await getLastEventID();
-  const event_id = (last_event_id+1).toString();
+  const event_id = (last_event_id + 1).toString();
+
+  let logData;
 
   logData = JSON.stringify({
-    user_id: user_id, 
+    user_id: user_id,
     timestamp: timestamp,
     event_date: req.body.event_date,
-    event_time: req.body.event_time, 
-    event_type: req.body.event_type, 
-    event_theme_type: req.body.event_theme_type, 
-    event_venue_type: req.body.event_venue_type, 
-    event_guest_added: req.body.event_guest_added, 
-    event_guest_list_url: req.body.event_guest_list_url, 
-    event_id: event_id
+    event_time: req.body.event_time,
+    event_type: req.body.event_type,
+    event_theme_type: req.body.event_theme_type,
+    event_venue_type: req.body.event_venue_type,
+    event_guest_added: req.body.event_guest_added,
+    event_guest_list_url: req.body.event_guest_list_url,
+    event_id: event_id,
   });
-
 
   try {
     let responseData_Atlas = await addNewEventDetails(logData);
     let responseData_ETH = await addLogToETH(logData);
 
-    let responseData = responseData_Atlas && responseData_ETH; 
+    let responseData = responseData_Atlas && responseData_ETH;
 
     res.send(responseData);
-                    
   } catch (error) {
     console.log(error);
   }
 });
 
-
-
-app.post(use_case_3_VH_dashboard, async function (req, res) { //Function for Use Case 3: Vertical Head (Hospitality) Assigning Work to Vendors (Venue Manager/ Decorator) 
+app.post(use_case_3_VH_dashboard, async function (req, res) {
+  //Function for Use Case 3: Vertical Head (Hospitality) Assigning Work to Vendors (Venue Manager/ Decorator)
   //Sub-part: 1: VH Dashboard
 
-
   let responseData = await eventDataForVHDashboard();
-  
+
   let vendor_type_choice = req.body.vendorChoice;
 
   let vendorID = await getRandomVendorID(vendor_type_choice);
@@ -145,24 +135,18 @@ app.post(use_case_3_VH_dashboard, async function (req, res) { //Function for Use
   let responseData_2 = ""; //FEELS WRONG I DONT UNDERSTAND
 
   if (vendorID != "false") {
-    
   }
 
-  logData = JSON.stringify({
-    
-  });
-
+  logData = JSON.stringify({});
 
   try {
     let responseData = await addLogToETH(logData);
-                    
   } catch (error) {
     console.log(error);
   }
 });
 
-
-// Step 3 – ‘Assign to Venue Manager’/’Assign to ‘Decorator’ respectively 
+// Step 3 – ‘Assign to Venue Manager’/’Assign to ‘Decorator’ respectively
 // Step 4 – Submit
 // Step 5 – Vendor: Use Case 1
 // Step 6 – Vendor sees the following on their dashboard:
@@ -184,9 +168,6 @@ app.post(use_case_3_VH_dashboard, async function (req, res) { //Function for Use
 // Step 12 – Submit
 // Step 13 – Client: Use Case 1
 // Step 14 – Client sees contents from (Step 2) and Event Venue Address Step 15 – ‘Approve’
-
-
-
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

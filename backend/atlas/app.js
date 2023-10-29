@@ -49,17 +49,8 @@ async function getSingleDocument(user_id) {
   }
 }
 
-async function addNewEventDetails(user_id,
-                                  timestamp, 
-                                  event_date,
-                                  event_time, 
-                                  event_type, 
-                                  event_theme_type, 
-                                  event_venue_type, 
-                                  event_guest_added, 
-                                  event_guest_list_url, 
-                                  event_id
-                                  ) {
+async function addNewEventDetails(logData) {
+  console.log("addneweventdetails");
   try {
     await client.connect();
     console.log("Client connected\n");
@@ -68,26 +59,23 @@ async function addNewEventDetails(user_id,
     const collection = database.collection("eventDetails");
 
     const record = {
-      user_id: user_id, 
-      timestamp: timestamp,
-      event_date: event_date,
-      event_time: event_time, 
-      event_type: event_type, 
-      event_theme_type: event_theme_type, 
-      event_venue_type: event_venue_type, 
-      event_guest_added: event_guest_added, 
-      event_guest_list_url: event_guest_list_url, 
-      event_id: event_id
-      };
+      user_id: logData.user_id,
+      timestamp: logData.timestamp,
+      event_date: logData.event_date,
+      event_time: logData.event_time,
+      event_type: logData.event_type,
+      event_theme_type: logData.event_theme_type,
+      event_venue_type: logData.event_venue_type,
+      event_guest_added: logData.event_guest_added,
+      event_guest_list_url: logData.event_guest_list_url,
+      event_id: logData.event_id,
+    };
 
     const result = await collection.insertOne(record);
 
     console.log(`The record was inserted with the _id: ${result.insertedId}`);
-
   } catch (err) {
-    console.error(
-      `Something went wrong trying to push the document: ${err}\n`
-    );
+    console.error(`Something went wrong trying to push the document: ${err}\n`);
   }
 }
 
@@ -99,66 +87,69 @@ async function eventDataForVHDashboard(event_id) {
     console.log("Database connected\n");
     const collection = database.collection("eventDetails");
 
-        const query = { event_id: event_id };
+    const query = { event_id: event_id };
 
-        // console.log(query);
+    // console.log(query);
 
-        const cursor = await collection.findOne(query);
-        
-        if (cursor) {
-        const queryDataJSON = {
-            event_date: cursor.event_date,
-            event_time: cursor.event_time,
-            event_type: cursor.event_type,
-            event_theme_type: cursor.event_theme_type,
-            event_venue_type: cursor.event_venue_type
-        };
+    const cursor = await collection.findOne(query);
 
-        console.log("Document found\n");
-  
-        await client.close();
+    if (cursor) {
+      const queryDataJSON = {
+        event_date: cursor.event_date,
+        event_time: cursor.event_time,
+        event_type: cursor.event_type,
+        event_theme_type: cursor.event_theme_type,
+        event_venue_type: cursor.event_venue_type,
+      };
 
-        return queryDataJSON;
+      console.log("Document found\n");
 
-        } else {
-        console.log("Document not found");
-        }
-    } catch (err) {
-        console.error(
-        `Something went wrong trying to find the documents: ${err}\n`
-        );
-    } 
+      await client.close();
+
+      return queryDataJSON;
+    } else {
+      console.log("Document not found");
+    }
+  } catch (err) {
+    console.error(
+      `Something went wrong trying to find the documents: ${err}\n`
+    );
+  }
 }
 
 async function getLastEventID() {
   try {
-      await client.connect();
-      console.log("Client connected\n");
-      const database = client.db("sentinelShare");
-      console.log("Database connected\n");
-      const collection = database.collection("eventDetails");
-  
-      const query = { event_id: { $gte: "000" } }; 
-  
-      const cursor = await collection.find(query);
+    await client.connect();
+    console.log("Client connected\n");
+    const database = client.db("sentinelShare");
+    console.log("Database connected\n");
+    const collection = database.collection("eventDetails");
 
-      let queryDataJSON = {};
-      
-      while (await cursor.hasNext()) {
-          const entry = await cursor.next();
-          queryDataJSON['event_id'] = entry.event_id;
-        }
-      
-      return parseInt(queryDataJSON.event_id);
-      
-      } catch (err) {
-      console.error(
-          `Something went wrong trying to find the documents: ${err}\n`
-      );
-      }
+    const query = { event_id: { $gte: "000" } };
+
+    const cursor = await collection.find(query);
+
+    let queryDataJSON = {};
+
+    while (await cursor.hasNext()) {
+      const entry = await cursor.next();
+      queryDataJSON["event_id"] = entry.event_id;
+    }
+
+    return parseInt(queryDataJSON.event_id);
+  } catch (err) {
+    console.error(
+      `Something went wrong trying to find the documents: ${err}\n`
+    );
+  }
 }
 
-module.exports = getSingleDocument, addNewEventDetails, eventDataForVHDashboard, getLastEventID;
+module.exports = {
+  getSingleDocument,
+  addNewEventDetails,
+  eventDataForVHDashboard,
+  getLastEventID,
+};
 
 // (async () => {
 //   console.log(await eventDataForVHDashboard("001"));

@@ -28,7 +28,7 @@ export default function Login() {
     setLoginErrorState(false);
     setLoggingIn(true);
 
-    var url = "http://localhost:3003/";
+    var url = "http://localhost:3003/login";
     var credentials = {
       username: username,
       password: sha256(password),
