@@ -11,7 +11,6 @@ function Sidebar() {
   const navigate = useNavigate();
 
   function handleLogout() {
-    console.log("Logging out");
     Cookies.remove("auth");
     sessionStorage.clear();
     navigate("/login");

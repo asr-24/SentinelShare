@@ -8,12 +8,7 @@ const CLUSTER_URL = process.env.cluster_url;
 
 let uri = `mongodb+srv://${USER}:${PASSWORD}@${CLUSTER_URL}?retryWrites=true&w=majority`;
 
-const client = new MongoClient(
-  uri,
-  { useUnifiedTopology: true },
-  { UseNewUrlParser: true },
-  { keepAlive: 1 }
-);
+const client = new MongoClient(uri);
 
 client.connect();
 console.log("Client connected\n");
@@ -21,7 +16,7 @@ console.log("Client connected\n");
 async function getSingleDocument(user_id) {
   try {
     const database = client.db("sentinelShare");
-    console.log("Database connected\n");
+    console.log("\nDatabase connected\n");
     const collection = database.collection("authentication");
 
     const query = { user_id: user_id };
@@ -40,7 +35,7 @@ async function getSingleDocument(user_id) {
       console.log(queryDataJSON);
       return queryDataJSON;
     } else {
-      console.log("Document not found");
+      console.log("Document not found\n");
     }
   } catch (err) {
     console.error(

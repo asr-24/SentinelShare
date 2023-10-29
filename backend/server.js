@@ -48,7 +48,6 @@ const use_case_3_vendor_dashboard = ""; //UPDATE THIS TOO
 
 app.post(use_case_1, async function (req, res) {
   //Function for Use Case 1: Authentication
-  console.log("Use case 1");
   const timestamp = new Date().toISOString();
   try {
     let data = await authenticationForUser(req.body.username);
@@ -59,7 +58,6 @@ app.post(use_case_1, async function (req, res) {
 
     if (data.user_password === req.body.password) {
       console.log("Authentication successful");
-      console.log(data.user_password);
       auth = true;
     } else {
       console.log("Authentication failed");
@@ -76,7 +74,7 @@ app.post(use_case_1, async function (req, res) {
     res.send(responseData);
 
     let logData = JSON.stringify({
-      user_id: user_id,
+      user_id: userId,
       timestamp: timestamp,
       status: auth,
     });
@@ -89,7 +87,6 @@ app.post(use_case_1, async function (req, res) {
 
 app.post(use_case_2, async function (req, res) {
   //Function for Use Case 2: Creation of New Event
-  console.log("Use case 2 initiated");
 
   const timestamp = new Date().toISOString();
 

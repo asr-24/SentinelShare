@@ -27,14 +27,9 @@ function CreateRequest() {
       event_theme_type: eventThemeType,
       event_venue_type: eventVenueType,
     };
-
-    console.log(sentRequestData);
-
     const response = await axios.post(url, sentRequestData).catch((e) => {
       console.log(e);
     });
-
-    console.log(response.data);
     if (response.data === false) {
       setErrMessage(true);
     }

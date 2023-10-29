@@ -10,18 +10,19 @@ import { useEffect } from "react";
 export default function Login() {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [loggingIn, setLoggingIn] = useState(false);
-  const [loginErrorState, setLoginErrorState] = useState();
-  const [loginErrMessage, setLoginErrMessage] = useState();
+  const [loginErrorState, setLoginErrorState] = useState(false);
+  const [loginErrMessage, setLoginErrMessage] = useState(false);
 
-  const isAuthenticated = !!Cookies.get("auth");
+  // const isAuthenticated = !!Cookies.get("auth");
+
   useEffect(() => {
-    if (isAuthenticated) {
+    if (!!Cookies.get("auth")) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +38,6 @@ export default function Login() {
     const response = await axios
       .post(url, credentials)
       .catch((e) => console.log("error"));
-    console.log(response.data);
 
     sessionStorage.setItem("name", response.data.userEmail);
     sessionStorage.setItem("type", response.data.userType);
@@ -49,7 +49,6 @@ export default function Login() {
         username,
         password,
       };
-      console.log("Setting cookies");
       Cookies.set("auth", JSON.stringify(userData), {});
       navigate("/");
     } else {
@@ -80,7 +79,7 @@ export default function Login() {
             <div>
               <label>Username</label> <br />
               <input
-                required="true"
+                required
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -89,7 +88,7 @@ export default function Login() {
             <div>
               <label>Password</label> <br />
               <input
-                required="true"
+                required
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
