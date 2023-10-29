@@ -97,6 +97,10 @@ async function eventDataForVHDashboard(event_id) {
         event_venue_type: cursor.event_venue_type,
       };
 
+      const vendor_assignment = getRandomVendorID();
+
+      queryDataJSON['vendor_assignment'] = vendor_assignment;
+
       console.log("Document found\n");
 
       await client.close();
