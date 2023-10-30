@@ -2,8 +2,7 @@ import {
   getSingleDocument,
   addNewEventDetails,
   eventDataForVHDashboard,
-  getLastEventID,
-  getRandomVendorID
+  getLastEventID
 } from "./atlas/app.js";
 import { blockchainIPFSIntegration } from "./blockchain.js";
 import "dotenv/config";
