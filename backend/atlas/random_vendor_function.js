@@ -17,7 +17,7 @@ const client = new MongoClient(
   { keepAlive: 1 }
 );
 
-async function getRandomVendorID(event_id) {
+async function getRandomVendorID() {
                                     
     try {
         console.log("Attempting connection to Mongo Client");
@@ -25,20 +25,18 @@ async function getRandomVendorID(event_id) {
         console.log("Client connected\n");
         const database = client.db("sentinelShare");
         console.log("Database connected\n");
-        const collection = database.collection("eventDetails");
+        const collection = database.collection("vendors");
 
         const query = { vendor_type : "decorator" };
 
-        // console.log(query);
+        console.log(query);
 
-        const cursor = await collection.findOne(query);
+        const cursor = await collection.find(query).toArray(function(err, all_vendors) {
+            if (err) throw err;
+            console.log(all_vendors);
+          });;
         
-        // Event Date,
-        // Event Time,
-        // Event Type (formal/ casual/ party/ wedding),
-        // Theme Type (dark/ warm/ light/ pastels/ monochrome), 
-        // Venue Type (small/ medium/ big/ large)
-
+        console.log(cursor.vendor_email);
 
         if (cursor) {
         const queryDataJSON = {
@@ -48,7 +46,6 @@ async function getRandomVendorID(event_id) {
             event_theme_type: cursor.event_theme_type,
             event_venue_type: cursor.event_venue_type
         };
-
         console.log("Document found\n");
         console.log(queryDataJSON);
         return queryDataJSON;
@@ -64,3 +61,4 @@ async function getRandomVendorID(event_id) {
 }
 
 
+getRandomVendorID();
