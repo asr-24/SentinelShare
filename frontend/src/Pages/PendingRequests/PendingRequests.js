@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function PendingRequests() {
   const role = sessionStorage.getItem("type");
+  const [data, setData] = useState("");
 
-  if (role === "employee") {
-    console.log("Employee");
-    axios.get("/VHpending").then((response) => {
-      console.log(response.data);
-    });
-  }
+  useEffect(() => {
+    if (role === "employee") {
+      axios.get("http://localhost:3003/VHpending").then((res) => {
+        setData(res.data);
+      });
+    }
+  });
 
   return (
     <div className="page">

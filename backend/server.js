@@ -113,6 +113,7 @@ app.post(use_case_2, async function (req, res) {
   });
 
   try {
+    console.log("THIS IS LOG DATA", logData);
     let responseData_Atlas = await addNewEventDetails(logData);
     let responseData_ETH = await addLogToETH(logData);
 
@@ -135,6 +136,7 @@ app.post(use_case_2, async function (req, res) {
 app.get("/VHpending", async (req, res) => {
   console.log("Sending pending requests");
   let last_event_id = await getLastEventID();
+  last_event_id.toString();
   let responseData = await eventDataForVHDashboard(last_event_id);
   res.send(responseData);
 });

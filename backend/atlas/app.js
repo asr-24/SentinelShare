@@ -65,9 +65,9 @@ async function addNewEventDetails(logData) {
       event_guest_list_url: logData.event_guest_list_url,
       event_id: logData.event_id,
     };
-
+    console.log("RECORD", record);
     const result = await collection.insertOne(record);
-
+    console.log("RESUTLSSS", result);
     console.log(`The record was inserted with the _id: ${result.insertedId}`);
   } catch (err) {
     console.error(`Something went wrong trying to push the document: ${err}\n`);
@@ -99,7 +99,7 @@ async function eventDataForVHDashboard(event_id) {
 
       // const vendor_assignment = getRandomVendorID();
 
-      queryDataJSON['vendor_assignment'] = vendor_assignment;
+      queryDataJSON["vendor_assignment"] = vendor_assignment;
 
       console.log("Document found\n");
 
