@@ -2,7 +2,7 @@ import {
   getSingleDocument,
   addNewEventDetails,
   eventDataForVHDashboard,
-  getLastEventID
+  getLastEventID,
 } from "./atlas/app.js";
 import { blockchainIPFSIntegration } from "./blockchain.js";
 import "dotenv/config";
@@ -130,6 +130,13 @@ app.post(use_case_2, async function (req, res) {
   } catch (error) {
     console.log(error);
   }
+});
+
+app.get("/VHpending", async (req, res) => {
+  console.log("Sending pending requests");
+  let last_event_id = await getLastEventID();
+  let responseData = await eventDataForVHDashboard(last_event_id);
+  res.send(responseData);
 });
 
 app.post(use_case_3_VH_dashboard, async function (req, res) {

@@ -1,10 +1,14 @@
 import React from "react";
+import axios from "axios";
 
 function PendingRequests() {
   const role = sessionStorage.getItem("type");
-  console.log(role);
 
   if (role === "employee") {
+    console.log("Employee");
+    axios.get("/VHpending").then((response) => {
+      console.log(response.data);
+    });
   }
 
   return (
