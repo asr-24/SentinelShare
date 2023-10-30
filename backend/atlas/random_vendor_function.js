@@ -29,29 +29,13 @@ async function getRandomVendorID() {
 
         const query = { vendor_type : "decorator" };
 
-        console.log(query);
+        let vendor_id_allotted = '0';
 
         const cursor = await collection.find(query).toArray(function(err, all_vendors) {
             if (err) throw err;
-            console.log(all_vendors);
+            vendor_id_allotted = (all_vendors[0].vendor_id).toString();
+            return vendor_id_allotted;
           });;
-        
-        console.log(cursor.vendor_email);
-
-        if (cursor) {
-        const queryDataJSON = {
-            event_date: cursor.event_date,
-            event_time: cursor.event_time,
-            event_type: cursor.event_type,
-            event_theme_type: cursor.event_theme_type,
-            event_venue_type: cursor.event_venue_type
-        };
-        console.log("Document found\n");
-        console.log(queryDataJSON);
-        return queryDataJSON;
-        } else {
-        console.log("Document not found");
-        }
     } catch (err) {
         console.error(
         `Something went wrong trying to find the documents: ${err}\n`

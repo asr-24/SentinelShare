@@ -8,13 +8,12 @@ const CLUSTER_URL = process.env.cluster_url;
 
 let uri = `mongodb+srv://${USER}:${PASSWORD}@${CLUSTER_URL}?retryWrites=true&w=majority`;
 
-const client = new MongoClient(uri);
-
-client.connect();
-console.log("Client connected\n");
 
 async function getSingleDocument(user_id) {
   try {
+    const client = new MongoClient(uri);
+    await client.connect();
+    console.log("Client connected\n");
     const database = client.db("sentinelShare");
     console.log("\nDatabase connected\n");
     const collection = database.collection("authentication");
@@ -47,6 +46,9 @@ async function getSingleDocument(user_id) {
 async function addNewEventDetails(logData) {
   console.log("addneweventdetails");
   try {
+    const client = new MongoClient(uri);
+    await client.connect();
+    console.log("Client connected\n");
     // await client.connect();
     console.log("Client connected\n");
     const database = client.db("sentinelShare");
@@ -71,6 +73,34 @@ async function addNewEventDetails(logData) {
     console.error(`Something went wrong trying to push the document: ${err}\n`);
   }
 }
+
+async function getRandomVendorID() {
+                                    
+  try {
+      console.log("Attempting connection to Mongo Client");
+      await client.connect();
+      console.log("Client connected\n");
+      const database = client.db("sentinelShare");
+      console.log("Database connected\n");
+      const collection = database.collection("vendors");
+
+      const query = { vendor_type : "decorator" };
+
+      let vendor_id_allotted = '0';
+
+      const cursor = await collection.find(query).toArray(function(err, all_vendors) {
+          if (err) throw err;
+          vendor_id_allotted = (all_vendors[0].vendor_id).toString();
+          return vendor_id_allotted;
+        });;
+  } catch (err) {
+      console.error(
+      `Something went wrong trying to find the documents: ${err}\n`
+      );
+  }
+  
+}
+
 
 async function eventDataForVHDashboard(event_id) {
   try {
