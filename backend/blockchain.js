@@ -12,6 +12,7 @@ const mnemonic =
 import contractJSON from "./build/contracts/AuthenticationLogging.json" assert { type: "json" };
 const contractABI = contractJSON.abi;
 
+
 const contractAddress = "0xc6bbd4B6077D43dc11ddc66c951ea2677D7B999e";
 
 // Function to initialize web3
@@ -28,11 +29,19 @@ async function interactWithContract(logData) {
 
     // Initializing the contract instance
     const contract = new web3.eth.Contract(contractABI, contractAddress);
+    console.log(contractABI);
+    console.log(contractAddress);
 
     // Encoding the data for the storeData function
     const encodedData = contract.methods.storeData(logData).encodeABI();
     // Getting the default account from the HDWalletProvider
-    const defaultAccount = web3.currentProvider.addresses[0];
+
+    // console.log(web3.currentProvider.addresses);
+    // const defaultAccount = web3.currentProvider.addresses[0];
+
+    const defaultAccount = "0xC978ec83ACd92D3244096aa24195dB4e60C34617";
+
+    
 
     // Creating a transaction object
     const transactionObject = {
@@ -41,21 +50,22 @@ async function interactWithContract(logData) {
       data: encodedData,
     };
 
-    // async function checkBalance() {
-    //   try {
-    //     const balance = await web3.eth.getBalance(
-    //       "0x407d73d8a49eeb85d32cf465507dd71d507100c1"
-    //     );
-    //     console.log("Balance:", balance);
-    //   } catch (error) {
-    //     console.error("Error:", error);
-    //   }
-    // }
+    async function checkBalance() {
+      try {
+        const balance = await web3.eth.getBalance(
+          "0xC978ec83ACd92D3244096aa24195dB4e60C34617"
+        );
+        console.log("Balance:", balance);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
 
-    // checkBalance();
+    checkBalance();
 
     try {
       const transaction = await web3.eth.sendTransaction(transactionObject);
+      console.log(transaction.transactionHash);
       return transaction.transactionHash;
     } catch (error) {
       console.error("Error Sending Transaction:", error);
@@ -82,3 +92,31 @@ export async function blockchainIPFSIntegration(logData) {
   }
   return true;
 }
+
+
+
+// async function checkBalance() {
+//   try {
+//     const web3 = await initializeWeb3();
+
+//     const balance = await web3.eth.getBalance(
+//       "0xC978ec83ACd92D3244096aa24195dB4e60C34617"
+//     );
+//     console.log("Balance:", balance);
+//   } catch (error) {
+//     console.error("Error:", error);
+//   }
+// }
+
+// checkBalance();
+
+
+// const user_id = "1001";
+// const timestamp = "2023-10-10";
+// const auth = "success";
+// 	const logData = JSON.stringify({
+//   timestamp: timestamp,
+//   status: auth,
+// });
+
+// interactWithContract(logData);
