@@ -12,7 +12,6 @@ const mnemonic =
 import contractJSON from "./build/contracts/AuthenticationLogging.json" assert { type: "json" };
 const contractABI = contractJSON.abi;
 
-
 const contractAddress = "0xc6bbd4B6077D43dc11ddc66c951ea2677D7B999e";
 
 // Function to initialize web3
@@ -29,8 +28,8 @@ async function interactWithContract(logData) {
 
     // Initializing the contract instance
     const contract = new web3.eth.Contract(contractABI, contractAddress);
-    console.log(contractABI);
-    console.log(contractAddress);
+    // console.log(contractABI);
+    // console.log(contractAddress);
 
     // Encoding the data for the storeData function
     const encodedData = contract.methods.storeData(logData).encodeABI();
@@ -40,8 +39,6 @@ async function interactWithContract(logData) {
     // const defaultAccount = web3.currentProvider.addresses[0];
 
     const defaultAccount = "0xC978ec83ACd92D3244096aa24195dB4e60C34617";
-
-    
 
     // Creating a transaction object
     const transactionObject = {
@@ -55,7 +52,7 @@ async function interactWithContract(logData) {
         const balance = await web3.eth.getBalance(
           "0xC978ec83ACd92D3244096aa24195dB4e60C34617"
         );
-        console.log("Balance:", balance);
+        // console.log("Balance:", balance);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -65,7 +62,7 @@ async function interactWithContract(logData) {
 
     try {
       const transaction = await web3.eth.sendTransaction(transactionObject);
-      console.log(transaction.transactionHash);
+      // console.log(transaction.transactionHash);
       return transaction.transactionHash;
     } catch (error) {
       console.error("Error Sending Transaction:", error);
@@ -80,7 +77,7 @@ export async function blockchainIPFSIntegration(logData) {
   const helia = await createHelia();
   const j = json(helia);
 
-  console.log(logData);
+  // console.log(logData);
   const transactionHash = await interactWithContract(logData);
 
   // Store CID on Helia
@@ -92,8 +89,6 @@ export async function blockchainIPFSIntegration(logData) {
   }
   return true;
 }
-
-
 
 // async function checkBalance() {
 //   try {
@@ -109,7 +104,6 @@ export async function blockchainIPFSIntegration(logData) {
 // }
 
 // checkBalance();
-
 
 // const user_id = "1001";
 // const timestamp = "2023-10-10";

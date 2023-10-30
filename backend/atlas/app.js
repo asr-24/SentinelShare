@@ -47,12 +47,12 @@ async function getSingleDocument(user_id) {
 async function addNewEventDetails(logData) {
   console.log("addneweventdetails");
   try {
-    await client.connect();
+    // await client.connect();
     console.log("Client connected\n");
     const database = client.db("sentinelShare");
     console.log("Database connected\n");
     const collection = database.collection("eventDetails");
-
+    logData = JSON.parse(logData);
     const record = {
       user_id: logData.user_id,
       timestamp: logData.timestamp,
@@ -65,9 +65,7 @@ async function addNewEventDetails(logData) {
       event_guest_list_url: logData.event_guest_list_url,
       event_id: logData.event_id,
     };
-    console.log("RECORD", record);
     const result = await collection.insertOne(record);
-    console.log("RESUTLSSS", result);
     console.log(`The record was inserted with the _id: ${result.insertedId}`);
   } catch (err) {
     console.error(`Something went wrong trying to push the document: ${err}\n`);
@@ -76,7 +74,7 @@ async function addNewEventDetails(logData) {
 
 async function eventDataForVHDashboard(event_id) {
   try {
-    await client.connect();
+    // await client.connect();
     console.log("Client connected\n");
     const database = client.db("sentinelShare");
     console.log("Database connected\n");

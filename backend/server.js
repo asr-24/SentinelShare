@@ -92,7 +92,7 @@ app.post(use_case_2, async function (req, res) {
 
   let errorState;
 
-  const user_id = req.body.user_id; // add yaha user_id;
+  const user_id = req.body.user_id;
 
   let last_event_id = await getLastEventID();
   let event_id = (last_event_id + 1).toString();
@@ -113,7 +113,6 @@ app.post(use_case_2, async function (req, res) {
   });
 
   try {
-    console.log("THIS IS LOG DATA", logData);
     let responseData_Atlas = await addNewEventDetails(logData);
     let responseData_ETH = await addLogToETH(logData);
 
@@ -134,7 +133,6 @@ app.post(use_case_2, async function (req, res) {
 });
 
 app.get("/VHpending", async (req, res) => {
-  console.log("Sending pending requests");
   let last_event_id = await getLastEventID();
   last_event_id.toString();
   let responseData = await eventDataForVHDashboard(last_event_id);
