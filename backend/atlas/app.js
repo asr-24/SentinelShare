@@ -77,6 +77,7 @@ async function addNewEventDetails(logData) {
 async function getRandomVendorID() {
                                     
   try {
+      const client = new MongoClient(uri);
       console.log("Attempting connection to Mongo Client");
       await client.connect();
       console.log("Client connected\n");
@@ -104,7 +105,8 @@ async function getRandomVendorID() {
 
 async function eventDataForVHDashboard(event_id) {
   try {
-    // await client.connect();
+    const client = new MongoClient(uri);
+    await client.connect();
     console.log("Client connected\n");
     const database = client.db("sentinelShare");
     console.log("Database connected\n");
@@ -146,6 +148,7 @@ async function eventDataForVHDashboard(event_id) {
 
 async function getLastEventID() {
   try {
+    const client = new MongoClient(uri);
     await client.connect();
     console.log("Client connected\n");
     const database = client.db("sentinelShare");
@@ -162,7 +165,8 @@ async function getLastEventID() {
       const entry = await cursor.next();
       queryDataJSON["event_id"] = entry.event_id;
     }
-
+    // console.log("Please work");
+    // console.log(queryDataJSON.event_id);
     return parseInt(queryDataJSON.event_id);
   } catch (err) {
     console.error(

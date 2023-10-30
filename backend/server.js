@@ -97,6 +97,9 @@ app.post(use_case_2, async function (req, res) {
   let last_event_id = await getLastEventID();
   let event_id = (last_event_id + 1).toString();
 
+  console.log(event_id);
+  console.log(typeof(event_id));
+
   let logData;
 
   logData = JSON.stringify({
