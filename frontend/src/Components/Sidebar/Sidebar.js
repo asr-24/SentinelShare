@@ -10,6 +10,8 @@ function Sidebar() {
   const [sidebar, setSidebar] = useState(false);
   const navigate = useNavigate();
 
+  const role = sessionStorage.getItem("type");
+
   function handleLogout() {
     Cookies.remove("auth");
     sessionStorage.clear();
@@ -27,9 +29,11 @@ function Sidebar() {
             <li>
               <FiClock />
             </li>
-            <li>
-              <FiFilePlus />
-            </li>
+            {role === "client" && (
+              <li>
+                <FiFilePlus />
+              </li>
+            )}
           </div>
           <div className="dashboard-sidebar-icons--user">
             <li>
@@ -44,11 +48,13 @@ function Sidebar() {
           <div className="dashboard-sidebar-text">
             <div className="dashboard-sidebar-text--actions">
               <a href="/pendingrequests">Pending Requests</a>
-              <a href="/createrequest">Create Request</a>
+              {role === "client" && <a href="/createrequest">Create Request</a>}
             </div>
             <div className="dashboard-sidebar-text--user">
               <a href="/profile">Profile</a>
-              <a onClick={handleLogout}>Log Out</a>
+              <a href="/#" onClick={handleLogout}>
+                Log Out
+              </a>
             </div>
           </div>
         )}

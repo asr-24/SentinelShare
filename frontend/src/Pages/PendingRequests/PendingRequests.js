@@ -1,6 +1,12 @@
 import React from "react";
 
 function PendingRequests() {
+  const role = sessionStorage.getItem("type");
+  console.log(role);
+
+  if (role === "employee") {
+  }
+
   return (
     <div className="page">
       <div className="pendingrequests">

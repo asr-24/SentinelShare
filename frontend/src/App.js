@@ -1,6 +1,6 @@
 import "./App.css";
-import React, { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./Pages/Login/Login";
 import Header from "./Components/Header/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
@@ -18,7 +18,7 @@ function App() {
     if (!isAuthenticated) {
       navigate("/login");
     }
-  }, []);
+  }, [navigate, isAuthenticated]);
 
   return (
     <div className="App">
