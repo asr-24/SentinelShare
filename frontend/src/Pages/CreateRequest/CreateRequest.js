@@ -34,8 +34,12 @@ function CreateRequest() {
     const response = await axios.post(url, sentRequestData).catch((e) => {
       console.log(e);
     });
+    console.log(response.datac);
     if (response.data === false) {
       setErrMessage(true);
+    }
+    if (response.data === true) {
+      setSuccessMessage(true);
     }
   };
 
@@ -43,6 +47,9 @@ function CreateRequest() {
     <div className="page">
       {errMessage && (
         <div className="error-message">Error, request not sent</div>
+      )}
+      {successMessage && (
+        <div className="success-message">Request sent successfully</div>
       )}
       {successMessage && <div className="success-message">Request sent</div>}
       <form className="createrequest-form" onSubmit={handleSubmit}>

@@ -39,26 +39,32 @@ export default function Login() {
       .post(url, credentials)
       .catch((e) => console.log("error"));
 
-    sessionStorage.setItem("name", response.data.userEmail);
-    sessionStorage.setItem("type", response.data.userType);
-    sessionStorage.setItem("userid", response.data.userId);
-
-    if (response.data.auth) {
-      setLoggingIn(false);
-      const userData = {
-        username,
-        password,
-      };
-      Cookies.set("auth", JSON.stringify(userData), {});
-      navigate("/");
-    } else {
-      document.getElementById("login-form").reset();
-      console.log("Authentication Failed");
+    if (!response) {
       setLoginErrorState(true);
-      setPassword("");
-      setUsername("");
-      setLoginErrMessage("Invalid password");
+      setLoginErrMessage("Could not connect to server");
       setLoggingIn(false);
+    } else {
+      sessionStorage.setItem("name", response.data.userEmail);
+      sessionStorage.setItem("type", response.data.userType);
+      sessionStorage.setItem("userid", response.data.userId);
+
+      if (response.data.auth) {
+        setLoggingIn(false);
+        const userData = {
+          username,
+          password,
+        };
+        Cookies.set("auth", JSON.stringify(userData), {});
+        navigate("/");
+      } else {
+        document.getElementById("login-form").reset();
+        console.log("Authentication Failed");
+        setLoginErrorState(true);
+        setPassword("");
+        setUsername("");
+        setLoginErrMessage("Invalid password");
+        setLoggingIn(false);
+      }
     }
   };
 

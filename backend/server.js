@@ -134,8 +134,7 @@ app.post(use_case_2, async function (req, res) {
 
 app.get("/VHpending", async (req, res) => {
   let last_event_id = await getLastEventID();
-  last_event_id.toString();
-  let responseData = await eventDataForVHDashboard(last_event_id);
+  let responseData = await eventDataForVHDashboard(last_event_id.toString());
   res.send(responseData);
 });
 

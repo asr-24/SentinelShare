@@ -13,6 +13,8 @@ function PendingRequests() {
     }
   });
 
+  console.log(data);
+
   return (
     <div className="page">
       <div className="pendingrequests">
