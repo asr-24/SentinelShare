@@ -3,6 +3,7 @@ import {
   addNewEventDetails,
   eventDataForVHDashboard,
   getLastEventID,
+  eventDataForVendorDashboard
 } from "./atlas/app.js";
 import { blockchainIPFSIntegration } from "./blockchain.js";
 import "dotenv/config";
@@ -55,7 +56,7 @@ async function authenticationForUser(user_id) {
 const use_case_1 = "/login";
 const use_case_2 = "/createrequest";
 const use_case_3_VH_dashboard = "/vhdashboard"; //UPDATE THIS
-const use_case_3_vendor_dashboard = ""; //UPDATE THIS TOO
+const use_case_3_VENDOR_dashboard = ""; //UPDATE
 
 app.post(use_case_1, async function (req, res) {
   //Function for Use Case 1: Authentication
@@ -153,22 +154,21 @@ app.get("/VHpending", async (req, res) => {
 });
 
 app.post(use_case_3_VH_dashboard, async function (req, res) {
-  //Function for Use Case 3: Vertical Head (Hospitality) Assigning Work to Vendors (Venue Manager/ Decorator)
-  //Sub-part: 1: VH Dashboard
-  console.log(req.body);
-  let last_event_id = await getLastEventID();
-  const event_id = (last_event_id + 1).toString();
+  //just have to add success page
+ });
 
-  let responseData = await eventDataForVHDashboard(event_id);
-  let logData;
-  logData = JSON.stringify({});
 
-  try {
-    let responseData = await addLogToETH(logData);
-  } catch (error) {
-    console.log(error);
-  }
-});
+app.post("/vendorPending", async (req, res) => { //check post req url
+  let vendor_id = ""; //VENDOR ID FROM FRONTEND 
+  let responseData = await eventDataForVendorDashboard(vendor_id);
+  res.send(responseData);
+})
+
+app.post(use_case_3_VENDOR_dashboard, async function (req, res) {
+  //just have to add success page
+ });
+
+
 
 // Step 3 – ‘Assign to Venue Manager’/’Assign to ‘Decorator’ respectively
 // Step 4 – Submit

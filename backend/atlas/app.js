@@ -102,8 +102,37 @@ async function getRandomVendorID() {
   
 }
 
+async function addVendorAllocationToEventAllocations (logData) {
+  console.log("Add Vendor Allocations Function - ");
+  try {
+    const client = new MongoClient(uri);
+    await client.connect();
+    console.log("Client connected\n");
+    const database = client.db("sentinelShare");
+    console.log("Database connected\n");
+    const collection = database.collection("eventAllocations");
+    logData = JSON.parse(logData);
+    const record = {
+      event_date: logData.event_date,
+      event_time: logData.event_time,
+      event_type: logData.event_type,
+      event_theme_type: logData.event_theme_type,
+      event_venue_type: logData.event_venue_type,
+      vendor_assignment: logData.vendor_assignment
+    };
 
-async function eventDataForVHDashboard(event_id) {
+    const result = await collection.insertOne(record);
+
+    console.log(`The record was inserted with the _id: ${result.insertedId}`);
+
+  } catch (err) {
+    console.error(`Something went wrong trying to push the document: ${err}\n`);
+  }
+
+}
+
+
+async function eventDataForVHDashboard (event_id) {
   try {
     const client = new MongoClient(uri);
     await client.connect();
@@ -133,9 +162,53 @@ async function eventDataForVHDashboard(event_id) {
 
       console.log("Document found\n");
 
-      await client.close();
+      const eventAllocationUpdated = await addVendorAllocationToEventAllocations(queryDataJSON)
 
-      return queryDataJSON;
+      if (eventAllocationUpdated == true) {
+        console.log("Event Allocation Updated on Atlas");
+        return queryDataJSON;
+      } else {
+        return queryDataJSON; 
+      }
+      
+    } else {
+      console.log("Document not found");
+    }
+  } catch (err) {
+    console.error(
+      `Something went wrong trying to find the documents: ${err}\n`
+    );
+  }
+}
+
+
+async function eventDataForVendorDashboard (vendor_allocation) {
+  try {
+    const client = new MongoClient(uri);
+    await client.connect();
+    console.log("Client connected\n");
+    const database = client.db("sentinelShare");
+    console.log("Database connected\n");
+    const collection = database.collection("eventAllocations");
+
+    const query = { vendor_allocation: vendor_allocation };
+
+    console.log(query);
+
+    const cursor = await collection.findOne(query);
+
+    if (cursor) {
+      const queryDataJSON = {
+        event_date: cursor.event_date,
+        event_time: cursor.event_time,
+        event_type: cursor.event_type,
+        event_theme_type: cursor.event_theme_type,
+        event_venue_type: cursor.event_venue_type,
+        vendor_assignment: cursor.vendor_assignment
+      };
+
+    return queryDataJSON; 
+  
     } else {
       console.log("Document not found");
     }
@@ -180,6 +253,8 @@ module.exports = {
   addNewEventDetails,
   eventDataForVHDashboard,
   getLastEventID,
+  eventDataForVendorDashboard
+  
 };
 
 // (async () => {
