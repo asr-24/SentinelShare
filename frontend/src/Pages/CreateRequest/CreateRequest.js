@@ -107,7 +107,6 @@ function CreateRequest() {
             <option>Small</option>
             <option>Medium</option>
             <option>Big</option>
-            <option>Big</option>
             <option>Large</option>
           </select>
         </div>

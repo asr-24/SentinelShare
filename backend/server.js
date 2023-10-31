@@ -17,9 +17,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-function timestampInIST () {
+function timestampInIST() {
   const timestamp = new Date();
-  
+
   const ISTOffset = 5.5 * 60; // IST is UTC+5 hours and 30 minutes
   timestamp.setMinutes(timestamp.getMinutes() + ISTOffset);
 
@@ -27,9 +27,6 @@ function timestampInIST () {
 
   return ISTTimestamp;
 }
-
-
-
 
 async function addLogToETH(logData) {
   try {
@@ -57,12 +54,12 @@ async function authenticationForUser(user_id) {
 
 const use_case_1 = "/login";
 const use_case_2 = "/createrequest";
-const use_case_3_VH_dashboard = ""; //UPDATE THIS
+const use_case_3_VH_dashboard = "/vhdashboard"; //UPDATE THIS
 const use_case_3_vendor_dashboard = ""; //UPDATE THIS TOO
 
 app.post(use_case_1, async function (req, res) {
   //Function for Use Case 1: Authentication
-  const timestamp = timestampInIST(); 
+  const timestamp = timestampInIST();
   try {
     let data = await authenticationForUser(req.body.username);
     let userEmail = data.user_email;
@@ -102,7 +99,7 @@ app.post(use_case_1, async function (req, res) {
 app.post(use_case_2, async function (req, res) {
   //Function for Use Case 2: Creation of New Event
 
-  const timestamp = timestampInIST(); 
+  const timestamp = timestampInIST();
 
   let errorState;
 
@@ -112,7 +109,7 @@ app.post(use_case_2, async function (req, res) {
   let event_id = (last_event_id + 1).toString();
 
   console.log(event_id);
-  console.log(typeof(event_id));
+  console.log(typeof event_id);
 
   let logData;
 
@@ -155,10 +152,10 @@ app.get("/VHpending", async (req, res) => {
   res.send(responseData);
 });
 
-app.post(use_case_3_VH_dashboard, async function (req, res) {
+app.post("/vhdashboard", async function (req, res) {
   //Function for Use Case 3: Vertical Head (Hospitality) Assigning Work to Vendors (Venue Manager/ Decorator)
   //Sub-part: 1: VH Dashboard
-
+  console.log(req.body);
   let last_event_id = await getLastEventID();
   const event_id = (last_event_id + 1).toString();
 

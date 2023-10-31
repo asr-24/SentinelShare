@@ -1,24 +1,67 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import "./PendingRequests.css";
 
 function PendingRequests() {
   const role = sessionStorage.getItem("type");
   const [data, setData] = useState("");
+  const [fetched, setFetched] = useState(false);
+  const [vendorManager, setVendorManager] = useState("");
 
-  useEffect(() => {
+  function fetchPendingRequests(e) {
+    e.preventDefault();
+    console.log("Clicked");
     if (role === "employee") {
       axios.get("http://localhost:3003/VHpending").then((res) => {
         setData(res.data);
+        setFetched(true);
       });
     }
-  });
+  }
 
-  console.log(data);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    var url = "http://localhost:3003/vhdashboard";
+    const response = await axios.post(url, vendorManager).catch((e) => {
+      console.log(e);
+    });
+    console.log(response);
+  };
 
   return (
     <div className="page">
       <div className="pendingrequests">
-        <h1>Pending Requests</h1>
+        <button onClick={fetchPendingRequests}>Get Pending Requests</button>
+        {fetched && (
+          <div className="requestform">
+            <p>Event Date: {data.event_date}</p>
+            <p>Event Theme Type: {data.event_theme_type}</p>
+            <p>Event Time: {data.event_time}</p>
+            <p>Event Type: {data.event_type}</p>
+            <p>Event Venue Type: {data.event_venue_type}</p>
+            <form className="pendingreqSend" onSubmit={handleSubmit}>
+              <div>
+                <label>Venue Manager</label>
+                <input
+                  name="choice"
+                  value="Venue Manager"
+                  type="radio"
+                  onChange={(e) => setVendorManager(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>Decorator</label>
+                <input
+                  name="choice"
+                  value="Decorator"
+                  type="radio"
+                  onChange={(e) => setVendorManager(e.target.value)}
+                />
+              </div>
+              <input type="submit"></input>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );
