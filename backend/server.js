@@ -17,6 +17,20 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+function timestampInIST () {
+  const timestamp = new Date();
+  
+  const ISTOffset = 5.5 * 60; // IST is UTC+5 hours and 30 minutes
+  timestamp.setMinutes(timestamp.getMinutes() + ISTOffset);
+
+  const ISTTimestamp = timestamp.toISOString();
+
+  return ISTTimestamp;
+}
+
+
+
+
 async function addLogToETH(logData) {
   try {
     let returnedValue = await blockchainIPFSIntegration(logData);
@@ -48,7 +62,7 @@ const use_case_3_vendor_dashboard = ""; //UPDATE THIS TOO
 
 app.post(use_case_1, async function (req, res) {
   //Function for Use Case 1: Authentication
-  const timestamp = new Date().toISOString();
+  const timestamp = timestampInIST(); 
   try {
     let data = await authenticationForUser(req.body.username);
     let userEmail = data.user_email;
@@ -88,7 +102,7 @@ app.post(use_case_1, async function (req, res) {
 app.post(use_case_2, async function (req, res) {
   //Function for Use Case 2: Creation of New Event
 
-  const timestamp = new Date().toISOString();
+  const timestamp = timestampInIST(); 
 
   let errorState;
 
