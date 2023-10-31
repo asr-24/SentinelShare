@@ -152,7 +152,7 @@ app.get("/VHpending", async (req, res) => {
   res.send(responseData);
 });
 
-app.post("/vhdashboard", async function (req, res) {
+app.post(use_case_3_VH_dashboard, async function (req, res) {
   //Function for Use Case 3: Vertical Head (Hospitality) Assigning Work to Vendors (Venue Manager/ Decorator)
   //Sub-part: 1: VH Dashboard
   console.log(req.body);
@@ -160,7 +160,7 @@ app.post("/vhdashboard", async function (req, res) {
   const event_id = (last_event_id + 1).toString();
 
   let responseData = await eventDataForVHDashboard(event_id);
-
+  let logData;
   logData = JSON.stringify({});
 
   try {

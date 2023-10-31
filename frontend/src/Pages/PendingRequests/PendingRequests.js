@@ -46,7 +46,7 @@ function PendingRequests() {
                   name="choice"
                   value="Venue Manager"
                   type="radio"
-                  onChange={(e) => setVendorManager(e.target.value)}
+                  onChange={(e) => setVendorManager("Venue Manager")}
                 />
               </div>
               <div>
@@ -55,7 +55,7 @@ function PendingRequests() {
                   name="choice"
                   value="Decorator"
                   type="radio"
-                  onChange={(e) => setVendorManager(e.target.value)}
+                  onChange={(e) => setVendorManager("Decorator")}
                 />
               </div>
               <input type="submit"></input>
