@@ -8,7 +8,6 @@ const CLUSTER_URL = process.env.cluster_url;
 
 let uri = `mongodb+srv://${USER}:${PASSWORD}@${CLUSTER_URL}?retryWrites=true&w=majority`;
 
-
 async function getSingleDocument(user_id) {
   try {
     const client = new MongoClient(uri);
@@ -75,34 +74,36 @@ async function addNewEventDetails(logData) {
 }
 
 async function getRandomVendorID() {
-                                    
   try {
-      const client = new MongoClient(uri);
-      console.log("Attempting connection to Mongo Client");
-      await client.connect();
-      console.log("Client connected\n");
-      const database = client.db("sentinelShare");
-      console.log("Database connected\n");
-      const collection = database.collection("vendors");
+    console.log("Random Vendor ID Function");
+    const client = new MongoClient(uri);
+    console.log("Attempting connection to Mongo Client");
+    await client.connect();
+    console.log("Client connected\n");
+    const database = client.db("sentinelShare");
+    console.log("Database connected\n");
+    const collection = database.collection("vendors");
 
-      const query = { vendor_type : "decorator" };
+    const query = { vendor_type: "decorator" };
 
-      let vendor_id_allotted = '0';
+    let vendor_id_allotted = "0";
 
-      const cursor = await collection.find(query).toArray(function(err, all_vendors) {
-          if (err) throw err;
-          vendor_id_allotted = (all_vendors[0].vendor_id).toString();
-          return vendor_id_allotted;
-        });;
+    console.log("Test");
+    const cursor = await collection
+      .find(query)
+      .toArray(function (err, all_vendors) {
+        if (err) throw err;
+        vendor_id_allotted = all_vendors[0].vendor_id.toString();
+        return vendor_id_allotted;
+      });
   } catch (err) {
-      console.error(
+    console.error(
       `Something went wrong trying to find the documents: ${err}\n`
-      );
+    );
   }
-  
 }
 
-async function addVendorAllocationToEventAllocations (logData) {
+async function addVendorAllocationToEventAllocations(logData) {
   console.log("Add Vendor Allocations Function - ");
   try {
     const client = new MongoClient(uri);
@@ -118,21 +119,18 @@ async function addVendorAllocationToEventAllocations (logData) {
       event_type: logData.event_type,
       event_theme_type: logData.event_theme_type,
       event_venue_type: logData.event_venue_type,
-      vendor_assignment: logData.vendor_assignment
+      vendor_assignment: logData.vendor_assignment,
     };
 
     const result = await collection.insertOne(record);
 
     console.log(`The record was inserted with the _id: ${result.insertedId}`);
-
   } catch (err) {
     console.error(`Something went wrong trying to push the document: ${err}\n`);
   }
-
 }
 
-
-async function eventDataForVHDashboard (event_id) {
+async function eventDataForVHDashboard(event_id) {
   try {
     const client = new MongoClient(uri);
     await client.connect();
@@ -156,21 +154,22 @@ async function eventDataForVHDashboard (event_id) {
         event_venue_type: cursor.event_venue_type,
       };
 
-      const vendor_assignment = getRandomVendorID();
+      const vendor_assignment = await getRandomVendorID();
 
       queryDataJSON["vendor_assignment"] = vendor_assignment;
+      console.log("Vendor Assigned:", vendor_assignment);
 
       console.log("Document found\n");
 
-      const eventAllocationUpdated = await addVendorAllocationToEventAllocations(queryDataJSON)
+      const eventAllocationUpdated =
+        await addVendorAllocationToEventAllocations(queryDataJSON);
 
       if (eventAllocationUpdated == true) {
         console.log("Event Allocation Updated on Atlas");
         return queryDataJSON;
       } else {
-        return queryDataJSON; 
+        return queryDataJSON;
       }
-      
     } else {
       console.log("Document not found");
     }
@@ -181,8 +180,7 @@ async function eventDataForVHDashboard (event_id) {
   }
 }
 
-
-async function eventDataForVendorDashboard (vendor_allocation) {
+async function eventDataForVendorDashboard(vendor_allocation) {
   try {
     const client = new MongoClient(uri);
     await client.connect();
@@ -204,11 +202,10 @@ async function eventDataForVendorDashboard (vendor_allocation) {
         event_type: cursor.event_type,
         event_theme_type: cursor.event_theme_type,
         event_venue_type: cursor.event_venue_type,
-        vendor_assignment: cursor.vendor_assignment
+        vendor_assignment: cursor.vendor_assignment,
       };
 
-    return queryDataJSON; 
-  
+      return queryDataJSON;
     } else {
       console.log("Document not found");
     }
@@ -253,8 +250,7 @@ module.exports = {
   addNewEventDetails,
   eventDataForVHDashboard,
   getLastEventID,
-  eventDataForVendorDashboard
-  
+  eventDataForVendorDashboard,
 };
 
 // (async () => {

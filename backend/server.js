@@ -3,7 +3,7 @@ import {
   addNewEventDetails,
   eventDataForVHDashboard,
   getLastEventID,
-  eventDataForVendorDashboard
+  eventDataForVendorDashboard,
 } from "./atlas/app.js";
 import { blockchainIPFSIntegration } from "./blockchain.js";
 import "dotenv/config";
@@ -150,25 +150,26 @@ app.post(use_case_2, async function (req, res) {
 app.get("/VHpending", async (req, res) => {
   let last_event_id = await getLastEventID();
   let responseData = await eventDataForVHDashboard(last_event_id.toString());
+  console.log(responseData);
   res.send(responseData);
 });
 
 app.post(use_case_3_VH_dashboard, async function (req, res) {
-  //just have to add success page
- });
+  console.log(req.body);
+  res.send("Success");
+});
 
-
-app.post("/vendorPending", async (req, res) => { //check post req url
-  let vendor_id = ""; //VENDOR ID FROM FRONTEND 
+app.get("/vendorPending", async (req, res) => {
+  //check post req url
+  let vendor_id = "3001"; //VENDOR ID FROM FRONTEND
   let responseData = await eventDataForVendorDashboard(vendor_id);
   res.send(responseData);
-})
+});
 
 app.post(use_case_3_VENDOR_dashboard, async function (req, res) {
-  //just have to add success page
- });
-
-
+  console.log(req.body);
+  res.send("Success");
+});
 
 // Step 3 – ‘Assign to Venue Manager’/’Assign to ‘Decorator’ respectively
 // Step 4 – Submit

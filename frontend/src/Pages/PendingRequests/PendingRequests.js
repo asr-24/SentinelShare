@@ -4,15 +4,21 @@ import "./PendingRequests.css";
 
 function PendingRequests() {
   const role = sessionStorage.getItem("type");
+  const id = sessionStorage.getItem("userid");
   const [data, setData] = useState("");
   const [fetched, setFetched] = useState(false);
   const [vendorManager, setVendorManager] = useState("");
+  const [responseAxios, setResponseAxios] = useState("");
 
   function fetchPendingRequests(e) {
     e.preventDefault();
-    console.log("Clicked");
     if (role === "employee") {
       axios.get("http://localhost:3003/VHpending").then((res) => {
+        setData(res.data);
+        setFetched(true);
+      });
+    } else if (role === "vendor") {
+      axios.get("http://localhost:3003/vendorPending").then((res) => {
         setData(res.data);
         setFetched(true);
       });
@@ -25,7 +31,7 @@ function PendingRequests() {
     const response = await axios.post(url, vendorManager).catch((e) => {
       console.log(e);
     });
-    console.log(response);
+    setResponseAxios(response);
   };
 
   return (
@@ -60,6 +66,7 @@ function PendingRequests() {
               </div>
               <input type="submit"></input>
             </form>
+            {responseAxios.data}
           </div>
         )}
       </div>
