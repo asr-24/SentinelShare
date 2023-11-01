@@ -29,7 +29,6 @@ async function getRandomVendorID() {
     const query = { vendor_type: "decorator" };
 
     let vendor_id_allotted = "0";
-
     const cursor = await collection
       .find(query)
       .toArray(function (err, all_vendors) {

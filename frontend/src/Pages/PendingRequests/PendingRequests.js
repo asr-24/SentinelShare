@@ -12,6 +12,7 @@ function PendingRequests() {
   const [vendorManager, setVendorManager] = useState("");
   const [responseAxios, setResponseAxios] = useState("");
   const [loading, setLoading] = useState(false);
+  const [allDone, setallDone] = useState(false);
 
   function fetchPendingRequests(e) {
     setLoading(true);
@@ -37,53 +38,59 @@ function PendingRequests() {
       console.log(e);
     });
     setResponseAxios(response);
+    setallDone(true);
   };
 
   return (
     <div className="page">
-      <div className="pendingrequests">
-        <button
-          className="fetch-pendingrequest-button"
-          onClick={fetchPendingRequests}
-        >
-          <FiArrowDown />
-          {"  "}Get Pending Requests
-        </button>
-        <div className={`loader ${loading ? "fadeDown" : "hidden"}`}>
-          <LoadingIcons.Oval stroke="black" />
-        </div>
-        {fetched && (
-          <div className="requestform">
-            <p>Event Date: {data.event_date}</p>
-            <p>Event Theme Type: {data.event_theme_type}</p>
-            <p>Event Time: {data.event_time}</p>
-            <p>Event Type: {data.event_type}</p>
-            <p>Event Venue Type: {data.event_venue_type}</p>
-            <form className="pendingreqSend" onSubmit={handleSubmit}>
-              <div>
-                <label>Venue Manager</label>
-                <input
-                  name="choice"
-                  value="Venue Manager"
-                  type="radio"
-                  onChange={(e) => setVendorManager("Venue Manager")}
-                />
-              </div>
-              <div>
-                <label>Decorator</label>
-                <input
-                  name="choice"
-                  value="Decorator"
-                  type="radio"
-                  onChange={(e) => setVendorManager("Decorator")}
-                />
-              </div>
-              <input type="submit"></input>
-            </form>
-            <div className="successMessage">{responseAxios.data}</div>
+      {allDone && "No more pending requests"}
+      {!allDone && (
+        <div className="pendingrequests">
+          <div>
+            <button
+              className="fetch-pendingrequest-button"
+              onClick={fetchPendingRequests}
+            >
+              <FiArrowDown />
+              {"  "}Get Pending Requests
+            </button>
+            <div className={`loader ${loading ? "fadeDown" : "hidden"}`}>
+              <LoadingIcons.Oval stroke="black" />
+            </div>
           </div>
-        )}
-      </div>
+          {fetched && (
+            <div className="requestform">
+              <p>Event Date: {data.event_date}</p>
+              <p>Event Theme Type: {data.event_theme_type}</p>
+              <p>Event Time: {data.event_time}</p>
+              <p>Event Type: {data.event_type}</p>
+              <p>Event Venue Type: {data.event_venue_type}</p>
+              <form className="pendingreqSend" onSubmit={handleSubmit}>
+                <div>
+                  <label>Venue Manager</label>
+                  <input
+                    name="choice"
+                    value="Venue Manager"
+                    type="radio"
+                    onChange={(e) => setVendorManager("Venue Manager")}
+                  />
+                </div>
+                <div>
+                  <label>Decorator</label>
+                  <input
+                    name="choice"
+                    value="Decorator"
+                    type="radio"
+                    onChange={(e) => setVendorManager("Decorator")}
+                  />
+                </div>
+                <input type="submit"></input>
+              </form>
+              <div className="successMessage">{responseAxios.data}</div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
