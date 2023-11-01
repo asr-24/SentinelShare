@@ -70,6 +70,7 @@ function CreateRequest() {
             Date
           </label>
           <input
+            required
             name="event_date"
             value={eventDate}
             type="date"
@@ -82,6 +83,7 @@ function CreateRequest() {
             Time
           </label>
           <input
+            required
             name="event_time"
             value={eventTime}
             type="time"
@@ -94,6 +96,7 @@ function CreateRequest() {
             Type
           </label>
           <select
+            required
             name="event_type"
             value={eventType}
             onChange={(e) => setEventType(e.target.value)}
@@ -110,6 +113,7 @@ function CreateRequest() {
             Theme
           </label>
           <select
+            required
             name="event_theme_type"
             onChange={(e) => setEventThemeType(e.target.value)}
           >
@@ -126,6 +130,7 @@ function CreateRequest() {
             Venue Size
           </label>
           <select
+            required
             name="event_venue_type"
             onChange={(e) => setEventVenueType(e.target.value)}
           >

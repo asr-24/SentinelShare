@@ -108,6 +108,7 @@ function PendingRequests() {
                   <div>
                     <label>Venue Manager</label>
                     <input
+                      required
                       name="choice"
                       value="Venue Manager"
                       type="radio"
@@ -117,6 +118,7 @@ function PendingRequests() {
                   <div>
                     <label>Decorator</label>
                     <input
+                      required
                       name="choice"
                       value="Decorator"
                       type="radio"
@@ -132,6 +134,7 @@ function PendingRequests() {
                     <div>
                       <label>Approved</label>
                       <input
+                        required
                         name="choice"
                         value="Approved"
                         type="radio"
@@ -141,6 +144,7 @@ function PendingRequests() {
                     <div>
                       <label>Rejected</label>
                       <input
+                        required
                         name="choice"
                         value="Rejected"
                         type="radio"
