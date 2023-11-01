@@ -74,6 +74,7 @@ async function addNewEventDetails(logData) {
 }
 
 async function getRandomVendorID() {
+  console.log("inside getRandomVendorID");
   try {
     console.log("Random Vendor ID Function");
     const client = new MongoClient(uri);
@@ -86,17 +87,19 @@ async function getRandomVendorID() {
 
     const query = { vendor_type: "decorator" };
 
+    console.log(query);
+
     let vendor_id_allotted = "0";
 
     console.log("Test");
-    const cursor = await collection
-      .find(query)
-      .toArray(function (err, all_vendors) {
-        if (err) throw err;
-        vendor_id_allotted = all_vendors[0].vendor_id.toString();
-        return vendor_id_allotted;
-      });
-  } catch (err) {
+  
+    const cursor = await collection.findOne(query);
+
+    if (cursor) {
+      const vendor_id_allotted = cursor.user_id;
+      console.log(vendor_id_allotted);
+      return vendor_id_allotted;
+  } }   catch (err) {
     console.error(
       `Something went wrong trying to find the documents: ${err}\n`
     );
@@ -112,7 +115,7 @@ async function addVendorAllocationToEventAllocations(logData) {
     const database = client.db("sentinelShare");
     console.log("Database connected\n");
     const collection = database.collection("eventAllocations");
-    logData = JSON.parse(logData);
+    // logData = JSON.parse(logData);
     const record = {
       event_date: logData.event_date,
       event_time: logData.event_time,
