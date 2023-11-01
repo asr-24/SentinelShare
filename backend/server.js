@@ -56,7 +56,7 @@ async function authenticationForUser(user_id) {
 const use_case_1 = "/login";
 const use_case_2 = "/createrequest";
 const use_case_3_VH_dashboard = "/vhdashboard"; //UPDATE THIS
-const use_case_3_VENDOR_dashboard = ""; //UPDATE
+const use_case_3_VENDOR_dashboard = "/vendorChoice"; //UPDATE
 
 app.post(use_case_1, async function (req, res) {
   //Function for Use Case 1: Authentication

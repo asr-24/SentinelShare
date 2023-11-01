@@ -22,6 +22,7 @@ function PendingRequests() {
   const [responseAxios, setResponseAxios] = useState("");
   const [loading, setLoading] = useState(false);
   const [allDone, setallDone] = useState(false);
+  const [vendorChoice, setVendorChoice] = useState("");
 
   function fetchPendingRequests(e) {
     setLoading(true);
@@ -48,6 +49,18 @@ function PendingRequests() {
     const response = await axios.post(url, vendorManager).catch((e) => {
       console.log(e);
     });
+    setResponseAxios(response);
+    setallDone(true);
+  };
+
+  const handleSubmit2 = async (e) => {
+    e.preventDefault();
+    var url = "http://localhost:3003/vendorChoice";
+    const response = await axios
+      .post(url, { choice: vendorChoice })
+      .catch((e) => {
+        console.log(e);
+      });
     setResponseAxios(response);
     setallDone(true);
   };
@@ -112,6 +125,31 @@ function PendingRequests() {
                   </div>
                   <input type="submit"></input>
                 </form>
+              )}
+              {role === "vendor" && (
+                <div>
+                  <form className="pendingreqSend" onSubmit={handleSubmit2}>
+                    <div>
+                      <label>Approved</label>
+                      <input
+                        name="choice"
+                        value="Approved"
+                        type="radio"
+                        onChange={(e) => setVendorChoice("Approved")}
+                      />
+                    </div>
+                    <div>
+                      <label>Rejected</label>
+                      <input
+                        name="choice"
+                        value="Rejected"
+                        type="radio"
+                        onChange={(e) => setVendorChoice("Rejected")}
+                      />
+                    </div>
+                    <input type="submit"></input>
+                  </form>
+                </div>
               )}
               <div className="successMessage">{responseAxios.data}</div>
             </div>
