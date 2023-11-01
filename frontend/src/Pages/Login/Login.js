@@ -79,7 +79,7 @@ export default function Login() {
       </div>
 
       <div className={`form-wrapper ${loggingIn ? "" : ""}`}>
-        <h1>Login</h1>
+        <h2>SentinelShare</h2>
         <form className="login-form" id="login-form" onSubmit={handleSubmit}>
           <div className="form-inputs">
             <div>

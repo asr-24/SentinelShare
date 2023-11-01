@@ -9,7 +9,7 @@ function Header() {
       <nav className="dashboard-nav">
         <li>
           <a href="/">
-            <h1>Dashboard</h1>
+            <p>SentinelShare</p>
           </a>
         </li>
         <li>Hello, {Name}</li>

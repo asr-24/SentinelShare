@@ -28,3 +28,43 @@
   border-radius: 2.5px;
   transition: background-color 0.3s ease-in-out;
 }
+
+.pendingreqSend > input:hover {
+  background: rgb(60, 95, 190);
+}
+
+.fetch-pendingrequest-button {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+  width: 200px;
+  z-index: 99;
+  border: none;
+  padding: 1rem;
+  background: rgb(78, 78, 80);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 2.5px;
+  transition: background-color 0.3s ease-in-out;
+  margin-bottom: 1rem;
+}
+
+.fetch-pendingrequest-button:hover {
+  background-color: rgb(44, 44, 44);
+}
+
+.pendingrequests {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.successMessage {
+  padding: 0.5rem;
+  /* background: rgba(49, 137, 47, 0.808); */
+  border-radius: 2.5px;
+  text-align: center;
+  color: rgba(49, 137, 47);
+}

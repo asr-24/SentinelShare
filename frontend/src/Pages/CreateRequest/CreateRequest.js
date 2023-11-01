@@ -2,6 +2,16 @@ import React from "react";
 import { useState } from "react";
 import "./CreateRequest.css";
 import axios from "axios";
+import {
+  FiCalendar,
+  FiClock,
+  FiUserCheck,
+  FiMinimize,
+  FiStar,
+  FiGift,
+  FiLink,
+  FiCheck,
+} from "react-icons/fi";
 
 function CreateRequest() {
   const [errMessage, setErrMessage] = useState(false);
@@ -55,7 +65,10 @@ function CreateRequest() {
       <form className="createrequest-form" onSubmit={handleSubmit}>
         <h2>Event form</h2>
         <div>
-          <label htmlFor="event_date">Date</label>
+          <label htmlFor="event_date">
+            <FiCalendar />
+            Date
+          </label>
           <input
             name="event_date"
             value={eventDate}
@@ -64,7 +77,10 @@ function CreateRequest() {
           ></input>
         </div>
         <div>
-          <label htmlFor="event_time">Time</label>
+          <label htmlFor="event_time">
+            <FiClock />
+            Time
+          </label>
           <input
             name="event_time"
             value={eventTime}
@@ -73,7 +89,10 @@ function CreateRequest() {
           ></input>
         </div>
         <div>
-          <label htmlFor="event_type">Event Type</label>
+          <label htmlFor="event_type">
+            <FiGift />
+            Type
+          </label>
           <select
             name="event_type"
             value={eventType}
@@ -86,7 +105,10 @@ function CreateRequest() {
           </select>
         </div>
         <div>
-          <label htmlFor="event_theme_type">Theme Type</label>
+          <label htmlFor="event_theme_type">
+            <FiStar />
+            Theme
+          </label>
           <select
             name="event_theme_type"
             onChange={(e) => setEventThemeType(e.target.value)}
@@ -99,7 +121,10 @@ function CreateRequest() {
           </select>
         </div>
         <div>
-          <label htmlFor="event_venue_type">Venue Type</label>
+          <label htmlFor="event_venue_type">
+            <FiMinimize />
+            Venue Size
+          </label>
           <select
             name="event_venue_type"
             onChange={(e) => setEventVenueType(e.target.value)}
@@ -111,7 +136,10 @@ function CreateRequest() {
           </select>
         </div>
         <div>
-          <label htmlFor="guest_list">Guest List</label>
+          <label htmlFor="guest_list">
+            <FiUserCheck />
+            Guest List
+          </label>
           <input
             type="checkbox"
             name="guest_list"
@@ -123,7 +151,10 @@ function CreateRequest() {
         </div>
         {guestList && (
           <div>
-            <label htmlForfor="guest_list_url">Guest List URL</label>
+            <label htmlForfor="guest_list_url">
+              <FiLink />
+              URL
+            </label>
             <input
               name="guest_list_url"
               type="text"

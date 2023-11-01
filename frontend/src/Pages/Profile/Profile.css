@@ -1,0 +1,11 @@
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1ch;
+}
+
+.profile-info p {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

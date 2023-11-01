@@ -26,9 +26,12 @@ function Sidebar() {
           onMouseEnter={() => setSidebar(true)}
         >
           <div className="dashboard-sidebar-icons--actions">
-            <li>
-              <FiClock />
-            </li>
+            {role === "vendor" ||
+              (role === "employee" && (
+                <li>
+                  <FiClock />
+                </li>
+              ))}
             {role === "client" && (
               <li>
                 <FiFilePlus />
@@ -47,7 +50,10 @@ function Sidebar() {
         {sidebar && (
           <div className="dashboard-sidebar-text">
             <div className="dashboard-sidebar-text--actions">
-              <a href="/pendingrequests">Pending Requests</a>
+              {role === "vendor" ||
+                (role === "employee" && (
+                  <a href="/pendingrequests">Pending Requests</a>
+                ))}
               {role === "client" && <a href="/createrequest">Create Request</a>}
             </div>
             <div className="dashboard-sidebar-text--user">

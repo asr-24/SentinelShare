@@ -6,15 +6,13 @@
 
 .form-wrapper {
   animation: fadeIn 1s ease-in-out;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .hidden {
   opacity: 100;
-}
-
-h1 {
-  width: 5ch;
-  margin: auto;
 }
 
 .login-form {
@@ -23,6 +21,10 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+}
+
+h4 {
+  margin: auto;
 }
 
 .login-error-message {

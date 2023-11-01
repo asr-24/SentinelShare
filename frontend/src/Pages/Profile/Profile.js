@@ -1,4 +1,6 @@
 import React from "react";
+import "./Profile.css";
+import { FiUser, FiMail, FiBriefcase } from "react-icons/fi";
 
 function Profile() {
   var userid = sessionStorage.getItem("userid");
@@ -7,9 +9,20 @@ function Profile() {
 
   return (
     <div className="page">
-      <p>User ID: {userid}</p>
-      <p>User Email: {name}</p>
-      <p>User Type: {type}</p>
+      <div className="profile-info">
+        <p>
+          <FiUser />
+          ID: {userid}
+        </p>
+        <p>
+          <FiMail />
+          Email: {name}
+        </p>
+        <p>
+          <FiBriefcase />
+          Role: {type}
+        </p>
+      </div>
     </div>
   );
 }

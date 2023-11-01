@@ -1,9 +1,10 @@
 .createrequest-form {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  max-width: 50ch;
-  margin: 5rem auto;
+  gap: 1rem;
+  max-width: 30ch;
+  /* margin: 5rem auto; */
+  margin: auto;
   padding: 2rem;
   border-radius: 5px;
   /* box-shadow: 1px 1px 4px rgb(163, 163, 163); */
@@ -27,12 +28,18 @@ select {
   width: 150px;
   border: none;
   padding: 0.7rem;
-  background: rgb(70, 110, 223);
+  background: rgb(70, 139, 223);
   color: white;
   font-size: 1rem;
   cursor: pointer;
   border-radius: 2.5px;
   transition: background-color 0.3s ease-in-out;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .createrequest-form input[type="submit"]:hover {
