@@ -159,10 +159,10 @@ app.post(use_case_3_VH_dashboard, async function (req, res) {
   res.send("Success");
 });
 
-app.get("/vendorPending", async (req, res) => {
-  //check post req url
-  let vendor_id = "3001"; //VENDOR ID FROM FRONTEND
+app.post("/vendorPending", async (req, res) => {
+  let vendor_id = req.body.vendorid;
   let responseData = await eventDataForVendorDashboard(vendor_id);
+  console.log("Response Data", responseData);
   res.send(responseData);
 });
 

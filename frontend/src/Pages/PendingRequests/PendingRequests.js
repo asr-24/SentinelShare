@@ -2,7 +2,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingIcons from "react-loading-icons";
 import "./PendingRequests.css";
-import { FiArrowDown } from "react-icons/fi";
+import {
+  FiArrowDown,
+  FiCalendar,
+  FiClock,
+  FiUserCheck,
+  FiMinimize,
+  FiStar,
+  FiGift,
+  FiLink,
+} from "react-icons/fi";
 
 function PendingRequests() {
   const role = sessionStorage.getItem("type");
@@ -23,11 +32,13 @@ function PendingRequests() {
         setLoading(false);
       });
     } else if (role === "vendor") {
-      axios.get("http://localhost:3003/vendorPending").then((res) => {
-        setData(res.data);
-        setFetched(true);
-        setLoading(false);
-      });
+      axios
+        .post("http://localhost:3003/vendorPending", { vendorid: id })
+        .then((res) => {
+          setData(res.data);
+          setFetched(true);
+          setLoading(false);
+        });
     }
   }
 
@@ -60,32 +71,48 @@ function PendingRequests() {
           </div>
           {fetched && (
             <div className="requestform">
-              <p>Event Date: {data.event_date}</p>
-              <p>Event Theme Type: {data.event_theme_type}</p>
-              <p>Event Time: {data.event_time}</p>
-              <p>Event Type: {data.event_type}</p>
-              <p>Event Venue Type: {data.event_venue_type}</p>
-              <form className="pendingreqSend" onSubmit={handleSubmit}>
-                <div>
-                  <label>Venue Manager</label>
-                  <input
-                    name="choice"
-                    value="Venue Manager"
-                    type="radio"
-                    onChange={(e) => setVendorManager("Venue Manager")}
-                  />
-                </div>
-                <div>
-                  <label>Decorator</label>
-                  <input
-                    name="choice"
-                    value="Decorator"
-                    type="radio"
-                    onChange={(e) => setVendorManager("Decorator")}
-                  />
-                </div>
-                <input type="submit"></input>
-              </form>
+              <p>
+                <FiCalendar /> Date: {data.event_date}
+              </p>
+              <p>
+                <FiClock />
+                Time: {data.event_time}
+              </p>
+              <p>
+                <FiGift />
+                Type: {data.event_type}
+              </p>
+              <p>
+                <FiStar />
+                Theme: {data.event_theme_type}
+              </p>
+              <p>
+                <FiMinimize />
+                Venue Size: {data.event_venue_type}
+              </p>
+              {role === "employee" && (
+                <form className="pendingreqSend" onSubmit={handleSubmit}>
+                  <div>
+                    <label>Venue Manager</label>
+                    <input
+                      name="choice"
+                      value="Venue Manager"
+                      type="radio"
+                      onChange={(e) => setVendorManager("Venue Manager")}
+                    />
+                  </div>
+                  <div>
+                    <label>Decorator</label>
+                    <input
+                      name="choice"
+                      value="Decorator"
+                      type="radio"
+                      onChange={(e) => setVendorManager("Decorator")}
+                    />
+                  </div>
+                  <input type="submit"></input>
+                </form>
+              )}
               <div className="successMessage">{responseAxios.data}</div>
             </div>
           )}

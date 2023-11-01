@@ -5,6 +5,12 @@
   gap: 0.4rem;
 }
 
+p {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 .pendingreqSend {
   margin-top: 1rem;
   display: flex;
