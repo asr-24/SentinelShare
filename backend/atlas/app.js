@@ -192,7 +192,7 @@ async function eventDataForVendorDashboard(vendor_allocation) {
     console.log("Database connected\n");
     const collection = database.collection("eventAllocations");
 
-    const query = { vendor_allocation: vendor_allocation };
+    const query = { vendor_assignment : vendor_allocation };
 
     console.log(query);
 
