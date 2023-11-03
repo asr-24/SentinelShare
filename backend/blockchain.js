@@ -52,7 +52,7 @@ async function interactWithContract(logData) {
         const balance = await web3.eth.getBalance(
           "0xC978ec83ACd92D3244096aa24195dB4e60C34617"
         );
-        // console.log("Balance:", balance);
+        console.log("Balance:" + balance + "\n");
       } catch (error) {
         console.error("Error:", error);
       }
@@ -62,7 +62,9 @@ async function interactWithContract(logData) {
 
     try {
       const transaction = await web3.eth.sendTransaction(transactionObject);
-      // console.log(transaction.transactionHash);
+      console.log(
+        "Transaction sent successfully" + transaction.transactionHash
+      );
       return transaction.transactionHash;
     } catch (error) {
       console.error("Error Sending Transaction:", error);

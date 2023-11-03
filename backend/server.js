@@ -44,6 +44,7 @@ async function addLogToETH(logData) {
 
 async function authenticationForUser(user_id) {
   try {
+    console.log("Fetching user credentials");
     let user_data = await getSingleDocument(user_id);
 
     return user_data;
@@ -60,6 +61,7 @@ const use_case_3_VENDOR_dashboard = "/vendorChoice"; //UPDATE
 
 app.post(use_case_1, async function (req, res) {
   //Function for Use Case 1: Authentication
+  console.log("Received request for login");
   const timestamp = timestampInIST();
   try {
     let data = await authenticationForUser(req.body.username);
@@ -91,7 +93,7 @@ app.post(use_case_1, async function (req, res) {
       status: auth,
     });
 
-    console.log(await addLogToETH(logData));
+    await addLogToETH(logData);
   } catch (error) {
     console.log(error);
   }
@@ -109,8 +111,8 @@ app.post(use_case_2, async function (req, res) {
   let last_event_id = await getLastEventID();
   let event_id = (last_event_id + 1).toString();
 
-  console.log(event_id);
-  console.log(typeof event_id);
+  // console.log(event_id);
+  // console.log(typeof event_id);
 
   let logData;
 
@@ -150,24 +152,24 @@ app.post(use_case_2, async function (req, res) {
 app.get("/VHpending", async (req, res) => {
   let last_event_id = await getLastEventID();
   let responseData = await eventDataForVHDashboard(last_event_id.toString());
-  console.log(responseData);
+  // console.log(responseData);
   res.send(responseData);
 });
 
 app.post(use_case_3_VH_dashboard, async function (req, res) {
-  console.log(req.body);
+  // console.log(req.body);
   res.send("Success");
 });
 
 app.post("/vendorPending", async (req, res) => {
   let vendor_id = req.body.vendorid;
   let responseData = await eventDataForVendorDashboard(vendor_id);
-  console.log("Response Data", responseData);
+  // console.log("Response Data", responseData);
   res.send(responseData);
 });
 
 app.post(use_case_3_VENDOR_dashboard, async function (req, res) {
-  console.log(req.body);
+  // console.log(req.body);
   res.send("Success");
 });
 

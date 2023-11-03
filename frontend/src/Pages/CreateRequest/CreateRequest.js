@@ -44,7 +44,7 @@ function CreateRequest() {
     const response = await axios.post(url, sentRequestData).catch((e) => {
       console.log(e);
     });
-    console.log(response.datac);
+    console.log(response.data);
     if (response.data === false) {
       setErrMessage(true);
     }
