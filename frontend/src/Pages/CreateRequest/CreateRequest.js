@@ -12,8 +12,10 @@ import {
   FiLink,
   FiCheck,
 } from "react-icons/fi";
+import LoadingIcons from "react-loading-icons";
 
 function CreateRequest() {
+  const [loading, setLoading] = useState(false);
   const [errMessage, setErrMessage] = useState(false);
   const [successMessage, setSuccessMessage] = useState(false);
   const [eventDate, setEventDate] = useState("");
@@ -26,6 +28,10 @@ function CreateRequest() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
+    setErrMessage(false);
+    setSuccessMessage(false);
 
     var user_id = sessionStorage.getItem("userid");
     console.log(user_id);
@@ -47,21 +53,15 @@ function CreateRequest() {
     console.log(response.data);
     if (response.data === false) {
       setErrMessage(true);
-    }
-    if (response.data === true) {
+      setLoading(false);
+    } else {
       setSuccessMessage(true);
+      setLoading(false);
     }
   };
 
   return (
     <div className="page">
-      {errMessage && (
-        <div className="error-message">Error, request not sent</div>
-      )}
-      {successMessage && (
-        <div className="success-message">Request sent successfully</div>
-      )}
-      {successMessage && <div className="success-message">Request sent</div>}
       <form className="createrequest-form" onSubmit={handleSubmit}>
         <h2>Event form</h2>
         <div>
@@ -169,6 +169,15 @@ function CreateRequest() {
         )}
 
         <input type="submit"></input>
+        <div className={`loader ${loading ? "fadeDown" : "hidden"}`}>
+          <LoadingIcons.Oval stroke="black" />
+        </div>
+        {errMessage && (
+          <div className="error-message">Error, request not sent</div>
+        )}
+        {successMessage && (
+          <div className="success-message">Request sent successfully</div>
+        )}
       </form>
     </div>
   );

@@ -4,6 +4,7 @@ import {
   eventDataForVHDashboard,
   getLastEventID,
   eventDataForVendorDashboard,
+  addVerticalHeadChoiceAllocation,
 } from "./atlas/app.js";
 import { blockchainIPFSIntegration } from "./blockchain.js";
 import "dotenv/config";
@@ -11,13 +12,13 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 const app = express();
-//React port is 3000, Helia.js port is 3003
 const port = 3003;
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Get time of log in IST
 function timestampInIST() {
   const timestamp = new Date();
 
@@ -29,6 +30,8 @@ function timestampInIST() {
   return ISTTimestamp;
 }
 
+//  Add log to Ethereum Testnet Sepolia and then store
+//  transaction hash in IPFS
 async function addLogToETH(logData) {
   try {
     let returnedValue = await blockchainIPFSIntegration(logData);
@@ -42,6 +45,7 @@ async function addLogToETH(logData) {
   }
 }
 
+//  Authenticate user through MongoDB
 async function authenticationForUser(user_id) {
   try {
     console.log("Fetching user credentials");
@@ -54,14 +58,16 @@ async function authenticationForUser(user_id) {
   }
 }
 
-const use_case_1 = "/login";
-const use_case_2 = "/createrequest";
-const use_case_3_VH_dashboard = "/vhdashboard"; //UPDATE THIS
-const use_case_3_VENDOR_dashboard = "/vendorChoice"; //UPDATE
+//  Use case 1: /login
+//  Use case 2: /createrequest
+//  Use case 3  (Fetch pending requests for Vertical Head):   /vhpendingrequests
+//              (Vertical Head assigns vendor/decorator):     /vhdashboard
+//              (Fetch pending requests for Vendor):          /vendorpendingrequests
+//              (Vendor approves/rejects the request):        /vendordashboard
 
-app.post(use_case_1, async function (req, res) {
-  //Function for Use Case 1: Authentication
-  console.log("Received request for login");
+//  User authentication
+app.post("/login", async function (req, res) {
+  console.log("Received request for login\n");
   const timestamp = timestampInIST();
   try {
     let data = await authenticationForUser(req.body.username);
@@ -71,10 +77,10 @@ app.post(use_case_1, async function (req, res) {
     let auth = "";
 
     if (data.user_password === req.body.password) {
-      console.log("Authentication successful");
+      console.log("Authentication successful\n");
       auth = true;
     } else {
-      console.log("Authentication failed");
+      console.log("Authentication failed\n");
       auth = false;
     }
 
@@ -99,9 +105,8 @@ app.post(use_case_1, async function (req, res) {
   }
 });
 
-app.post(use_case_2, async function (req, res) {
-  //Function for Use Case 2: Creation of New Event
-
+//  Client creates a request
+app.post("/createrequest", async function (req, res) {
   const timestamp = timestampInIST();
 
   let errorState;
@@ -111,11 +116,7 @@ app.post(use_case_2, async function (req, res) {
   let last_event_id = await getLastEventID();
   let event_id = (last_event_id + 1).toString();
 
-  // console.log(event_id);
-  // console.log(typeof event_id);
-
   let logData;
-
   logData = JSON.stringify({
     user_id: user_id,
     timestamp: timestamp,
@@ -134,7 +135,7 @@ app.post(use_case_2, async function (req, res) {
     let responseData_ETH = await addLogToETH(logData);
 
     if (responseData_ETH == false) {
-      console.log("error");
+      console.log("Something went wrong");
     }
     let responseData = responseData_Atlas && responseData_ETH;
 
@@ -149,53 +150,40 @@ app.post(use_case_2, async function (req, res) {
   }
 });
 
-app.get("/VHpending", async (req, res) => {
+//  Vertical Head fetches pending requests
+app.get("/vhpendingrequests", async (req, res) => {
   let last_event_id = await getLastEventID();
-  let responseData = await eventDataForVHDashboard(last_event_id.toString());
-  // console.log(responseData);
+  let responseData = await addVerticalHeadChoiceAllocation(
+    last_event_id.toString()
+  );
   res.send(responseData);
 });
 
-app.post(use_case_3_VH_dashboard, async function (req, res) {
-  // console.log(req.body);
-  res.send("Success");
+//  Vertical Head assigns vendor/decorator to request
+app.post("/vhdashboard", async function (req, res) {
+  let responseData = await eventDataForVHDashboard(req.body.event_id);
+  if (responseData === true) {
+    res.send(true);
+  } else {
+    res.send(false);
+  }
 });
 
-app.post("/vendorPending", async (req, res) => {
+//  Vendor fetches pending requests
+app.post("/vendorpendingrequests", async (req, res) => {
   let vendor_id = req.body.vendorid;
   let responseData = await eventDataForVendorDashboard(vendor_id);
   // console.log("Response Data", responseData);
   res.send(responseData);
 });
 
-app.post(use_case_3_VENDOR_dashboard, async function (req, res) {
-  // console.log(req.body);
+//  Vertical Head approves/rejects the request
+app.post("/vendordashboard", async function (req, res) {
+  console.log(req.body);
   res.send("Success");
 });
 
-// Step 3 – ‘Assign to Venue Manager’/’Assign to ‘Decorator’ respectively
-// Step 4 – Submit
-// Step 5 – Vendor: Use Case 1
-// Step 6 – Vendor sees the following on their dashboard:
-// If Vendor.Type == ‘Decorator’: Event Date,
-// Event Time,
-// Event Type (formal/ casual/ party/ wedding),
-// Theme Type (dark/ warm/ light/ pastels/ monochrome), Venue Type (small/ medium/ big/ large)
-// Else If Vendor.Type == ‘Venue Manager’: Event Date,
-// Event Time,
-// Venue Type (small/ medium/ big/ large)
-// Step 7 – Vendor adds the following information on their dashboard:
-// If Vendor.Type == ‘Decorator’: ‘Approved’/ ‘Rejected’
-// Else If Vendor.Type == ‘Venue Manager’:
-// ‘Approved’ -> ‘Add Venue Address’/ ‘Rejected’
-// Step 8 – Submit
-// Step 9 – Vertical Head (Hospitality): Use Case 1
-// Step 10 – (Step 2) + Vendor Response ‘Event Venue Address’ Step 11 – ‘Approve’
-//  13
-// Step 12 – Submit
-// Step 13 – Client: Use Case 1
-// Step 14 – Client sees contents from (Step 2) and Event Venue Address Step 15 – ‘Approve’
-
+//  Start express server
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`App listening on port ${port}\n`);
 });

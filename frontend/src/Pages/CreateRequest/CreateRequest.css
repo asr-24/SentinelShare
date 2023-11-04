@@ -14,6 +14,10 @@
   font-size: 1rem;
 }
 
+.createrequest-form select {
+  font-size: 1rem;
+}
+
 .createrequest-form div {
   display: flex;
   gap: 1rem;
@@ -48,4 +52,18 @@ label {
 
 .createrequest-form input[type="select"] {
   background-color: red;
+}
+
+.success-message {
+  position: fixed;
+  top: 7vh;
+  left: 70px;
+  z-index: -1;
+  padding: 1rem;
+  color: white;
+  width: 25ch;
+  display: flex;
+  justify-content: center;
+  border-radius: 5px;
+  background-color: rgb(119, 205, 119);
 }

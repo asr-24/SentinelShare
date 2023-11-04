@@ -18,7 +18,7 @@ function PendingRequests() {
   const id = sessionStorage.getItem("userid");
   const [data, setData] = useState("");
   const [fetched, setFetched] = useState(false);
-  const [vendorManager, setVendorManager] = useState("");
+  const [allocation, setAllocation] = useState("");
   const [responseAxios, setResponseAxios] = useState("");
   const [loading, setLoading] = useState(false);
   const [allDone, setallDone] = useState(false);
@@ -27,14 +27,14 @@ function PendingRequests() {
   function fetchPendingRequests(e) {
     setLoading(true);
     if (role === "employee") {
-      axios.get("http://localhost:3003/VHpending").then((res) => {
+      axios.get("http://localhost:3003/vhpendingrequests").then((res) => {
         setData(res.data);
         setFetched(true);
         setLoading(false);
       });
     } else if (role === "vendor") {
       axios
-        .post("http://localhost:3003/vendorPending", { vendorid: id })
+        .post("http://localhost:3003/vendorpendingrequests", { vendorid: id })
         .then((res) => {
           setData(res.data);
           setFetched(true);
@@ -45,17 +45,22 @@ function PendingRequests() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     var url = "http://localhost:3003/vhdashboard";
-    const response = await axios.post(url, vendorManager).catch((e) => {
-      console.log(e);
-    });
+    const response = await axios
+      .post(url, { allocation: allocation, event_id: data.event_id })
+      .catch((e) => {
+        console.log(e);
+      });
     setResponseAxios(response);
+    setLoading(false);
     setallDone(true);
   };
 
   const handleSubmit2 = async (e) => {
     e.preventDefault();
-    var url = "http://localhost:3003/vendorChoice";
+    setLoading(true);
+    var url = "http://localhost:3003/vendordashboard";
     const response = await axios
       .post(url, { choice: vendorChoice })
       .catch((e) => {
@@ -63,6 +68,7 @@ function PendingRequests() {
       });
     setResponseAxios(response);
     setallDone(true);
+    setLoading(false);
   };
 
   return (
@@ -70,20 +76,25 @@ function PendingRequests() {
       {allDone && "No more pending requests"}
       {!allDone && (
         <div className="pendingrequests">
-          <div>
-            <button
-              className="fetch-pendingrequest-button"
-              onClick={fetchPendingRequests}
-            >
-              <FiArrowDown />
-              {"  "}Get Pending Requests
-            </button>
-            <div className={`loader ${loading ? "fadeDown" : "hidden"}`}>
-              <LoadingIcons.Oval stroke="black" />
-            </div>
+          <div className={`loader ${loading ? "fadeDown" : "hidden"}`}>
+            <LoadingIcons.Oval stroke="black" />
           </div>
+          {!fetched && (
+            <div>
+              <button
+                className="fetch-pendingrequest-button"
+                onClick={fetchPendingRequests}
+              >
+                <FiArrowDown />
+                {"  "}Get Pending Requests
+              </button>
+            </div>
+          )}
           {fetched && (
             <div className="requestform">
+              <p>
+                <b>Event ID: {data.event_id}</b>
+              </p>
               <p>
                 <FiCalendar /> Date: {data.event_date}
               </p>
@@ -112,7 +123,7 @@ function PendingRequests() {
                       name="choice"
                       value="Venue Manager"
                       type="radio"
-                      onChange={(e) => setVendorManager("Venue Manager")}
+                      onChange={(e) => setAllocation("Venue Manager")}
                     />
                   </div>
                   <div>
@@ -122,7 +133,7 @@ function PendingRequests() {
                       name="choice"
                       value="Decorator"
                       type="radio"
-                      onChange={(e) => setVendorManager("Decorator")}
+                      onChange={(e) => setAllocation("Decorator")}
                     />
                   </div>
                   <input type="submit"></input>
