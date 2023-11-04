@@ -10,7 +10,6 @@ import {
   FiStar,
   FiGift,
   FiLink,
-  FiCheck,
 } from "react-icons/fi";
 import LoadingIcons from "react-loading-icons";
 

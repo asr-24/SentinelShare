@@ -6,11 +6,9 @@ import {
   FiArrowDown,
   FiCalendar,
   FiClock,
-  FiUserCheck,
   FiMinimize,
   FiStar,
   FiGift,
-  FiLink,
 } from "react-icons/fi";
 
 function PendingRequests() {
