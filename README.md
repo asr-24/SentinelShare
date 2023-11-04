@@ -6,16 +6,23 @@ This project aims to create a tamperproof data sharing platform that can be used
 
 ## Folder structure
 
-`/frontend` - Reactjs initialized frontend app; server.js is Token API
-`/backend` - Truffle initialized to interact with smart contracts and Nodejs app to interact with Helia.
+`/frontend` - Reactjs initialized frontend app
+`/backend/atlas` - MongoDB connection
+`/backend/server.js` - Expressjs server
+`/backend/blockchain.js` - Interact with helia.js and Ethereum testnet to execute smart contracts
 
 ## Installation
 
 Run `npm install` in the following folders:
 
-- `backend/`
-- `backend/atlas`
-- `frontend/`
+- `/backend`
+- `/backend/atlas`
+- `/frontend`
+
+## Running the application
+
+- Inside `/frontend` run `npm start`
+- Inside `/backend` run `node server.js`
 
 ---
 
