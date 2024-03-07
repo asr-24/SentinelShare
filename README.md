@@ -2,14 +2,12 @@
 
 This project aims to create a tamperproof data sharing platform that can be used to securely share data between organisations and third parties
 
-[Task Tracker](http://bit.ly/TaskTracker_SentinelShare)
-
 ## Folder structure
 
-`/frontend` - Reactjs initialized frontend app
-`/backend/atlas` - MongoDB connection
-`/backend/server.js` - Expressjs server
-`/backend/blockchain.js` - Interact with helia.js and Ethereum testnet to execute smart contracts
+- `/frontend` - Reactjs initialized frontend app
+- `/backend/atlas` - MongoDB connection
+- `/backend/server.js` - Expressjs server
+- `/backend/blockchain.js` - Interact with helia.js and Ethereum testnet to execute smart contracts
 
 ## Installation
 
