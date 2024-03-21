@@ -1,5 +1,7 @@
 # SentinelShare
 
+> :warning: The Truffle Suite is being sunset as of writing this update. This project is dependent on npm package `@truffle/hdwallet-provider` and thus will also no longer be updated.
+
 This project aims to create a tamperproof data sharing platform that can be used to securely share data between organisations and third parties
 
 ## Folder structure
